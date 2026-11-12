@@ -1,92 +1,743 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ECEVault — Your ECE Study Resource Hub</title>
-  <meta name="description" content="Discover semester-wise notes, previous question papers, lab manuals, and essential ECE study resources — all free and accessible to everyone." />
+  <title>ECEvault — Unlock the Vault of ECE Knowledge</title>
+  <meta name="description" content="The ultimate, premium, secure knowledge repository for Electronics & Communication Engineering students. Notes, question papers, lab manuals, and syllabus guides." />
+  <link rel="canonical" href="https://ndlokesh.github.io/ECEVAULT/" />
+
+  <!-- Google Fonts: Outfit (Headings), Plus Jakarta Sans (Body), Quicksand (Secondary) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/design-tokens.css" />
-  <link rel="stylesheet" href="css/components.css" />
-  <link rel="stylesheet" href="css/layout.css" />
-  <link rel="stylesheet" href="css/pages/home.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Iconify SVG Icons -->
+  <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+
+  <!-- Tailwind CSS via PlayCDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              primary: '#2563EB',
+              deep: '#1E40AF',
+              sky: '#0EA5E9',
+              cyan: '#06B6D4',
+              amber: '#F59E0B',
+              amberLight: '#FEF3C7',
+              slate: '#1F2937',
+              gray: '#6B7280',
+              bg: '#F8FAFC',
+              card: '#FFFFFF'
+            }
+          },
+          fontFamily: {
+            outfit: ['Outfit', 'sans-serif'],
+            jakarta: ['"Plus Jakarta Sans"', 'sans-serif'],
+            quicksand: ['Quicksand', 'sans-serif']
+          },
+          boxShadow: {
+            'glow-blue': '0 10px 30px -5px rgba(37, 99, 235, 0.35)',
+            'glow-amber': '0 10px 30px -5px rgba(245, 158, 11, 0.4)',
+            'card-soft': '0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.03)',
+            'card-hover': '0 20px 35px -5px rgba(37, 99, 235, 0.12), 0 10px 15px -5px rgba(0, 0, 0, 0.04)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #F8FAFC;
+      color: #1F2937;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, .font-heading {
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .reveal {
+      opacity: 0;
+      filter: blur(6px);
+      transform: translateY(24px) scale(0.96);
+      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                  filter 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: opacity, filter, transform;
+    }
+    .reveal.active {
+      opacity: 1;
+      filter: blur(0px);
+      transform: translateY(0) scale(1);
+    }
+
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-40px) scale(0.95);
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-left.active {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+
+    .reveal-right {
+      opacity: 0;
+      transform: translateX(40px) scale(0.95);
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal-right.active {
+      opacity: 1;
+      transform: translateX(0) scale(1);
+    }
+
+    .delay-1 { transition-delay: 0.05s; }
+    .delay-2 { transition-delay: 0.1s; }
+    .delay-3 { transition-delay: 0.15s; }
+    .delay-4 { transition-delay: 0.2s; }
+    .delay-5 { transition-delay: 0.25s; }
+    .delay-6 { transition-delay: 0.3s; }
+
+    .parallax-bubble {
+      position: absolute;
+      border-radius: 9999px;
+      pointer-events: none;
+      filter: blur(40px);
+      opacity: 0.55;
+      z-index: 0;
+      transition: transform 0.2s ease-out;
+    }
+
+    .rotate-hover {
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .group:hover .rotate-hover {
+      transform: rotate(360deg) scale(1.1);
+    }
+
+    @keyframes heroSlideDown {
+      0% { opacity: 0; transform: translateY(-30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    .hero-entrance {
+      animation: heroSlideDown 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes goldPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
+      50% { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); }
+    }
+    .pulse-amber {
+      animation: goldPulse 2.5s infinite;
+    }
+  </style>
 </head>
-<body>
-  <nav class="navbar" id="navbar">
-    <div class="container navbar__inner">
-      <a href="index.html" class="navbar__brand">
-        <svg class="navbar__logo-icon" viewBox="0 0 32 32" width="32" height="32" fill="none"><rect width="32" height="32" rx="8" fill="#2563EB"/><path d="M8 10h16M8 16h12M8 22h14" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>
-        <span class="navbar__logo-text">ECE<span class="navbar__logo-accent">Vault</span></span>
-      </a>
-      <div class="navbar__search" id="navbarSearch">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" id="globalSearch" class="navbar__search-input" placeholder="Search materials, subjects…" autocomplete="off" />
+<body class="bg-brand-bg text-brand-slate antialiased selection:bg-brand-primary selection:text-white">
+
+  <!-- PARALLAX BACKGROUND BUBBLES -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+    <div class="parallax-bubble bg-gradient-to-tr from-blue-300 to-indigo-400 w-96 h-96 -top-20 -left-20" data-speed="2"></div>
+    <div class="parallax-bubble bg-gradient-to-tr from-sky-200 to-cyan-300 w-[500px] h-[500px] top-[40%] -right-32" data-speed="-1.5"></div>
+    <div class="parallax-bubble bg-gradient-to-tr from-amber-200 to-yellow-300 w-80 h-80 bottom-10 left-1/4" data-speed="1.2"></div>
+  </div>
+
+  <!-- STICKY NAVBAR -->
+  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200/80 transition-all duration-300" id="mainHeader">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Brand Logo -->
+        <a href="index.html" class="flex items-center gap-3 group focus:outline-none">
+          <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-brand-primary via-blue-600 to-brand-deep flex items-center justify-center text-white shadow-glow-blue transition-transform duration-300 group-hover:scale-105">
+            <iconify-icon icon="lucide:vault" width="24" height="24" class="rotate-hover"></iconify-icon>
+          </div>
+          <div class="flex flex-col">
+            <span class="font-heading font-extrabold text-2xl tracking-tight text-slate-900 group-hover:text-brand-primary transition-colors">
+              ECE<span class="text-brand-primary">vault</span>
+            </span>
+            <span class="text-[10px] font-semibold text-brand-amber uppercase tracking-widest -mt-1 font-quicksand">
+              Knowledge Repository
+            </span>
+          </div>
+        </a>
+
+        <!-- Global Search Bar -->
+        <div class="hidden md:flex items-center flex-1 max-w-md mx-8">
+          <div class="relative w-full">
+            <iconify-icon icon="lucide:search" width="18" height="18" class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></iconify-icon>
+            <input 
+              type="text" 
+              id="globalSearch" 
+              placeholder="Search subjects, notes, lab manuals, papers…" 
+              class="w-full pl-10 pr-4 py-2.5 bg-slate-100/80 hover:bg-slate-100 focus:bg-white text-sm text-slate-800 placeholder-slate-400 rounded-full border border-transparent focus:border-brand-primary focus:ring-4 focus:ring-blue-100 transition-all outline-none"
+            />
+          </div>
+        </div>
+
+        <!-- Desktop Navigation Links -->
+        <nav class="hidden lg:flex items-center gap-1.5 font-medium text-sm text-slate-600">
+          <a href="index.html" class="px-3.5 py-2 rounded-xl text-brand-primary bg-blue-50/80 font-semibold transition-all">Home</a>
+          <a href="materials.html" class="px-3.5 py-2 rounded-xl hover:text-brand-primary hover:bg-slate-100/70 transition-all">Study Materials</a>
+          <a href="papers.html" class="px-3.5 py-2 rounded-xl hover:text-brand-primary hover:bg-slate-100/70 transition-all">Question Papers</a>
+          <a href="lab-manuals.html" class="px-3.5 py-2 rounded-xl hover:text-brand-primary hover:bg-slate-100/70 transition-all">Lab Manuals</a>
+          <a href="syllabus.html" class="px-3.5 py-2 rounded-xl hover:text-brand-primary hover:bg-slate-100/70 transition-all">Syllabus</a>
+          <a href="about.html" class="px-3.5 py-2 rounded-xl hover:text-brand-primary hover:bg-slate-100/70 transition-all">About</a>
+        </nav>
+
+        <!-- CTA Action Button -->
+        <div class="hidden sm:flex items-center gap-3">
+          <a href="materials.html" class="inline-flex items-center gap-2 bg-gradient-to-r from-brand-primary to-blue-600 hover:from-blue-700 hover:to-brand-deep text-white text-sm font-semibold px-5 py-2.5 rounded-full shadow-glow-blue hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0">
+            <iconify-icon icon="lucide:key" width="16" height="16" class="text-brand-amber"></iconify-icon>
+            <span>Unlock Vault</span>
+          </a>
+        </div>
+
+        <!-- Mobile Hamburger Toggle -->
+        <button id="mobileMenuBtn" aria-label="Toggle Navigation" class="lg:hidden p-2 rounded-xl text-slate-600 hover:bg-slate-100 focus:outline-none">
+          <iconify-icon icon="lucide:menu" width="26" height="26" id="menuIcon"></iconify-icon>
+        </button>
+
       </div>
-      <ul class="navbar__links" id="navLinks">
-        <li><a href="index.html" class="navbar__link navbar__link--active">Home</a></li>
-        <li><a href="materials.html" class="navbar__link">Study Materials</a></li>
-        <li><a href="papers.html" class="navbar__link">Question Papers</a></li>
-        <li><a href="lab-manuals.html" class="navbar__link">Lab Manuals</a></li>
-        <li><a href="syllabus.html" class="navbar__link">Syllabus</a></li>
-        <li><a href="about.html" class="navbar__link">About</a></li>
-      </ul>
-      <button class="navbar__hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
     </div>
-  </nav>
-  <section class="hero" id="hero">
-    <div class="container hero__content">
-      <div class="hero__badge"><span>Free &amp; Open for Everyone</span></div>
-      <h1 class="hero__title">Your ECE Journey<br/>Starts Here.</h1>
-      <p class="hero__subtitle">Discover semester-wise notes, previous question papers, lab manuals, and essential ECE study resources — all free and accessible to everyone.</p>
-      <div class="hero__actions">
-        <a href="materials.html" class="btn btn--primary btn--lg">Explore Study Materials</a>
-        <a href="papers.html" class="btn btn--outline btn--lg">Browse Previous Papers</a>
+
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobileMenu" class="hidden lg:hidden bg-white/95 backdrop-blur-lg border-b border-slate-200 px-6 py-6 transition-all">
+      <div class="mb-4">
+        <input 
+          type="text" 
+          id="mobileSearch" 
+          placeholder="Search materials, subjects…" 
+          class="w-full px-4 py-2.5 bg-slate-100 rounded-xl text-sm outline-none border border-slate-200 focus:border-brand-primary"
+        />
       </div>
-      <div class="hero__stats">
-        <div class="hero__stat"><span class="hero__stat-number" data-count="8">8</span><span class="hero__stat-label">Semesters</span></div>
-        <div class="hero__stat"><span class="hero__stat-number" data-count="60">60+</span><span class="hero__stat-label">Subjects</span></div>
-        <div class="hero__stat"><span class="hero__stat-number" data-count="500">500+</span><span class="hero__stat-label">Resources</span></div>
-        <div class="hero__stat"><span class="hero__stat-number" data-count="100">100%</span><span class="hero__stat-label">Free Access</span></div>
+      <div class="flex flex-col gap-2 font-medium text-slate-700">
+        <a href="index.html" class="px-4 py-2.5 rounded-lg bg-blue-50 text-brand-primary font-semibold">Home</a>
+        <a href="materials.html" class="px-4 py-2.5 rounded-lg hover:bg-slate-50">Study Materials</a>
+        <a href="papers.html" class="px-4 py-2.5 rounded-lg hover:bg-slate-50">Previous Question Papers</a>
+        <a href="lab-manuals.html" class="px-4 py-2.5 rounded-lg hover:bg-slate-50">Lab Manuals</a>
+        <a href="syllabus.html" class="px-4 py-2.5 rounded-lg hover:bg-slate-50">Syllabus Breakdown</a>
+        <a href="about.html" class="px-4 py-2.5 rounded-lg hover:bg-slate-50">About ECEvault</a>
+      </div>
+      <div class="mt-6 pt-4 border-t border-slate-100">
+        <a href="materials.html" class="w-full flex items-center justify-center gap-2 bg-brand-primary text-white font-semibold py-3 rounded-xl shadow-glow-blue">
+          <iconify-icon icon="lucide:key" width="18" height="18" class="text-brand-amber"></iconify-icon>
+          Explore All Resources
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION -->
+  <section class="relative pt-12 pb-24 md:pt-20 md:pb-32 overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      
+      <div class="text-center max-w-3xl mx-auto hero-entrance">
+        
+        <!-- Tagline Pill -->
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200/80 shadow-sm mb-6 group cursor-pointer hover:border-brand-primary transition-colors">
+          <span class="w-2 h-2 rounded-full bg-brand-amber pulse-amber"></span>
+          <span class="text-xs sm:text-sm font-semibold text-brand-deep tracking-wide font-quicksand">
+            Unlock the Vault of ECE Knowledge
+          </span>
+          <iconify-icon icon="lucide:sparkles" class="text-brand-amber text-sm group-hover:rotate-12 transition-transform"></iconify-icon>
+        </div>
+
+        <!-- Headline -->
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.1] mb-6">
+          The Ultimate Knowledge Repository for <span class="bg-gradient-to-r from-brand-primary via-sky-500 to-brand-deep bg-clip-text text-transparent">ECE Students</span>
+        </h1>
+
+        <!-- Subtitle -->
+        <p class="text-base sm:text-lg md:text-xl text-brand-gray leading-relaxed mb-10 max-w-2xl mx-auto font-normal">
+          Semester-wise handwritten notes, university question papers with solutions, lab experiment manuals, and comprehensive curriculum guides — completely free and curated for high academic performance.
+        </p>
+
+        <!-- CTA Action Buttons -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+          <a href="materials.html" class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 bg-gradient-to-r from-brand-primary to-brand-deep hover:from-blue-600 hover:to-indigo-700 text-white font-semibold text-base px-8 py-4 rounded-full shadow-glow-blue hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+            <iconify-icon icon="lucide:book-open" width="20" height="20" class="text-brand-cyan"></iconify-icon>
+            <span>Explore Study Materials</span>
+          </a>
+          <a href="papers.html" class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 bg-white hover:bg-slate-50 text-slate-800 font-semibold text-base px-8 py-4 rounded-full border border-slate-300 hover:border-brand-primary shadow-sm hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+            <iconify-icon icon="lucide:file-text" width="20" height="20" class="text-brand-primary"></iconify-icon>
+            <span>Browse Previous Papers</span>
+          </a>
+        </div>
+
+        <!-- Trust Indicators Bar -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 pt-8 border-t border-slate-200/80 reveal">
+          <div class="p-4 rounded-2xl bg-white/70 backdrop-blur-sm border border-slate-200/60 shadow-sm">
+            <div class="text-2xl sm:text-3xl font-extrabold text-brand-primary font-heading">15k+</div>
+            <div class="text-xs sm:text-sm font-medium text-brand-gray mt-0.5">ECE Members</div>
+          </div>
+          <div class="p-4 rounded-2xl bg-white/70 backdrop-blur-sm border border-slate-200/60 shadow-sm">
+            <div class="text-2xl sm:text-3xl font-extrabold text-brand-cyan font-heading">8</div>
+            <div class="text-xs sm:text-sm font-medium text-brand-gray mt-0.5">Full Semesters</div>
+          </div>
+          <div class="p-4 rounded-2xl bg-white/70 backdrop-blur-sm border border-slate-200/60 shadow-sm">
+            <div class="text-2xl sm:text-3xl font-extrabold text-brand-deep font-heading">60+</div>
+            <div class="text-xs sm:text-sm font-medium text-brand-gray mt-0.5">Core Subjects</div>
+          </div>
+          <div class="p-4 rounded-2xl bg-white/70 backdrop-blur-sm border border-slate-200/60 shadow-sm">
+            <div class="text-2xl sm:text-3xl font-extrabold text-brand-amber font-heading">100%</div>
+            <div class="text-xs sm:text-sm font-medium text-brand-gray mt-0.5">Free Access</div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
-  <section class="section" id="semesters">
-    <div class="container">
-      <div class="section__header">
-        <span class="section__badge">📚 Explore by Semester</span>
-        <h2 class="section__title">Choose Your Semester</h2>
-        <p class="section__subtitle">Access organised study materials for every semester of your ECE programme.</p>
+
+  <!-- CORE VALUE FEATURES -->
+  <section class="py-20 bg-white border-y border-slate-200/80 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-blue-100 text-brand-deep font-quicksand">
+          <iconify-icon icon="lucide:shield-check"></iconify-icon>
+          Premium Academic Architecture
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-3 tracking-tight">
+          Everything You Need to Excel in ECE
+        </h2>
+        <p class="text-brand-gray text-base mt-3">
+          Constructed specifically for Electronics &amp; Communication Engineering students with zero fluff, no paywalls, and verified accuracy.
+        </p>
       </div>
-      <div class="semester-grid" id="semesterGrid"></div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        
+        <div class="reveal reveal-left delay-1 group p-8 rounded-3xl bg-brand-bg border border-slate-200 hover:border-brand-primary/40 hover:bg-white transition-all duration-300 shadow-card-soft hover:shadow-card-hover">
+          <div class="w-14 h-14 rounded-2xl bg-blue-100 text-brand-primary flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 group-hover:bg-brand-primary group-hover:text-white transition-all duration-300">
+            <iconify-icon icon="lucide:book-marked" width="28" height="28" class="rotate-hover"></iconify-icon>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 mb-2.5 font-heading">Semester-Wise Notes</h3>
+          <p class="text-sm text-brand-gray leading-relaxed mb-4">
+            Curated unit-by-unit lecture notes across VLSI, Signal Processing, Embedded Systems, Communication, and Circuit Analysis.
+          </p>
+          <a href="materials.html?type=notes" class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-primary hover:text-brand-deep">
+            <span>Explore Notes</span>
+            <iconify-icon icon="lucide:arrow-right" class="group-hover:translate-x-1 transition-transform"></iconify-icon>
+          </a>
+        </div>
+
+        <div class="reveal delay-2 group p-8 rounded-3xl bg-brand-bg border border-slate-200 hover:border-brand-cyan/50 hover:bg-white transition-all duration-300 shadow-card-soft hover:shadow-card-hover">
+          <div class="w-14 h-14 rounded-2xl bg-cyan-100 text-brand-cyan flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 group-hover:bg-brand-cyan group-hover:text-white transition-all duration-300">
+            <iconify-icon icon="lucide:file-check-2" width="28" height="28" class="rotate-hover"></iconify-icon>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 mb-2.5 font-heading">Previous Year Papers</h3>
+          <p class="text-sm text-brand-gray leading-relaxed mb-4">
+            Past 5-year university examination papers categorized by subject, regulation, and semester with step-by-step scoring keys.
+          </p>
+          <a href="papers.html" class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-cyan hover:text-cyan-700">
+            <span>Browse Exam Papers</span>
+            <iconify-icon icon="lucide:arrow-right" class="group-hover:translate-x-1 transition-transform"></iconify-icon>
+          </a>
+        </div>
+
+        <div class="reveal reveal-right delay-3 group p-8 rounded-3xl bg-brand-bg border border-slate-200 hover:border-indigo-400/50 hover:bg-white transition-all duration-300 shadow-card-soft hover:shadow-card-hover">
+          <div class="w-14 h-14 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
+            <iconify-icon icon="lucide:flask-conical" width="28" height="28" class="rotate-hover"></iconify-icon>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 mb-2.5 font-heading">Laboratory Manuals</h3>
+          <p class="text-sm text-brand-gray leading-relaxed mb-4">
+            Tested experiment procedures with breadboard schematics, oscilloscope plots, MATLAB codes, and viva questions.
+          </p>
+          <a href="lab-manuals.html" class="inline-flex items-center gap-1.5 text-sm font-semibold text-indigo-600 hover:text-indigo-800">
+            <span>View Lab Records</span>
+            <iconify-icon icon="lucide:arrow-right" class="group-hover:translate-x-1 transition-transform"></iconify-icon>
+          </a>
+        </div>
+
+        <div class="reveal reveal-left delay-4 group p-8 rounded-3xl bg-brand-bg border border-slate-200 hover:border-amber-400/50 hover:bg-white transition-all duration-300 shadow-card-soft hover:shadow-card-hover">
+          <div class="w-14 h-14 rounded-2xl bg-amber-100 text-brand-amber flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 group-hover:bg-brand-amber group-hover:text-white transition-all duration-300">
+            <iconify-icon icon="lucide:clipboard-list" width="28" height="28" class="rotate-hover"></iconify-icon>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 mb-2.5 font-heading">Course Curriculum</h3>
+          <p class="text-sm text-brand-gray leading-relaxed mb-4">
+            AICTE &amp; university aligned syllabus with course credits, unit breakdowns, prescribed author textbooks, and reference links.
+          </p>
+          <a href="syllabus.html" class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-amber hover:text-amber-700">
+            <span>Inspect Syllabus</span>
+            <iconify-icon icon="lucide:arrow-right" class="group-hover:translate-x-1 transition-transform"></iconify-icon>
+          </a>
+        </div>
+
+        <div class="reveal delay-5 group p-8 rounded-3xl bg-brand-bg border border-slate-200 hover:border-brand-primary/40 hover:bg-white transition-all duration-300 shadow-card-soft hover:shadow-card-hover">
+          <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300">
+            <iconify-icon icon="lucide:eye" width="28" height="28" class="rotate-hover"></iconify-icon>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 mb-2.5 font-heading">Instant Document Preview</h3>
+          <p class="text-sm text-brand-gray leading-relaxed mb-4">
+            Read notes directly in our distraction-free, light-theme document viewer with page controls, zoom, and direct download.
+          </p>
+          <a href="preview.html" class="inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-600 hover:text-emerald-800">
+            <span>Test Document Viewer</span>
+            <iconify-icon icon="lucide:arrow-right" class="group-hover:translate-x-1 transition-transform"></iconify-icon>
+          </a>
+        </div>
+
+        <div class="reveal reveal-right delay-6 group p-8 rounded-3xl bg-brand-bg border border-slate-200 hover:border-brand-deep/40 hover:bg-white transition-all duration-300 shadow-card-soft hover:shadow-card-hover">
+          <div class="w-14 h-14 rounded-2xl bg-sky-100 text-brand-sky flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 group-hover:bg-brand-sky group-hover:text-white transition-all duration-300">
+            <iconify-icon icon="lucide:lock-open" width="28" height="28" class="rotate-hover"></iconify-icon>
+          </div>
+          <h3 class="text-xl font-bold text-slate-900 mb-2.5 font-heading">100% Free &amp; Unlocked</h3>
+          <p class="text-sm text-brand-gray leading-relaxed mb-4">
+            No mandatory signups, no paywalls, and no hidden subscriptions. Instant one-click PDF downloads for every student.
+          </p>
+          <a href="about.html" class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-sky hover:text-sky-700">
+            <span>Read Our Mission</span>
+            <iconify-icon icon="lucide:arrow-right" class="group-hover:translate-x-1 transition-transform"></iconify-icon>
+          </a>
+        </div>
+
+      </div>
+
     </div>
   </section>
-  <section class="section section--alt" id="featured">
-    <div class="container">
-      <div class="section__header">
-        <span class="section__badge">⭐ Popular Resources</span>
-        <h2 class="section__title">Featured Study Materials</h2>
-        <p class="section__subtitle">Top-rated and most-downloaded resources hand-picked for you.</p>
+
+  <!-- CHOOSE YOUR SEMESTER SECTION -->
+  <section class="py-24 relative" id="semestersSection">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 reveal">
+        <div>
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-100 text-amber-800 font-quicksand">
+            <iconify-icon icon="lucide:layers"></iconify-icon>
+            Structured Degree Pathway
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-2 tracking-tight">
+            Select Your Semester
+          </h2>
+          <p class="text-brand-gray text-base mt-2">
+            Instant access to all subjects, theory modules, and lab courses for your current semester.
+          </p>
+        </div>
+        <div class="mt-4 md:mt-0">
+          <a href="materials.html" class="inline-flex items-center gap-2 text-sm font-semibold text-brand-primary hover:text-brand-deep transition-colors">
+            <span>View All Materials</span>
+            <iconify-icon icon="lucide:arrow-right"></iconify-icon>
+          </a>
+        </div>
       </div>
-      <div class="materials-grid" id="featuredGrid"></div>
-      <div class="section__cta"><a href="materials.html" class="btn btn--primary">View All Materials</a></div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="semesterGrid">
+      </div>
+
     </div>
   </section>
-  <footer class="footer" id="footer">
-    <div class="container">
-      <div class="footer__grid">
-        <div class="footer__brand"><a href="index.html" class="navbar__brand"><svg class="navbar__logo-icon" viewBox="0 0 32 32" width="28" height="28" fill="none"><rect width="32" height="32" rx="8" fill="#2563EB"/><path d="M8 10h16M8 16h12M8 22h14" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg><span class="navbar__logo-text">ECE<span class="navbar__logo-accent">Vault</span></span></a><p class="footer__tagline">Your one-stop destination for ECE study resources. Free, open, and built for students.</p></div>
-        <div class="footer__col"><h4 class="footer__heading">Quick Links</h4><ul class="footer__list"><li><a href="materials.html">Study Materials</a></li><li><a href="papers.html">Question Papers</a></li><li><a href="lab-manuals.html">Lab Manuals</a></li><li><a href="syllabus.html">Syllabus</a></li></ul></div>
-        <div class="footer__col"><h4 class="footer__heading">Semesters</h4><ul class="footer__list"><li><a href="semester.html?sem=1">Semester 1</a></li><li><a href="semester.html?sem=2">Semester 2</a></li><li><a href="semester.html?sem=3">Semester 3</a></li><li><a href="semester.html?sem=4">Semester 4</a></li><li><a href="semester.html?sem=5">Semester 5</a></li><li><a href="semester.html?sem=6">Semester 6</a></li><li><a href="semester.html?sem=7">Semester 7</a></li><li><a href="semester.html?sem=8">Semester 8</a></li></ul></div>
-        <div class="footer__col"><h4 class="footer__heading">About</h4><ul class="footer__list"><li><a href="about.html">About ECEVault</a></li><li><a href="about.html#contact">Contact Us</a></li></ul></div>
+
+  <!-- POPULAR STUDY MATERIALS -->
+  <section class="py-24 bg-white border-t border-slate-200/80 relative" id="popularSection">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-blue-100 text-brand-primary font-quicksand">
+          <iconify-icon icon="lucide:star" class="text-brand-amber"></iconify-icon>
+          Top Rated Resources
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-3 tracking-tight">
+          Featured Study Materials
+        </h2>
+        <p class="text-brand-gray text-base mt-3">
+          Hand-picked lecture notes and previous question papers with the highest student ratings.
+        </p>
       </div>
-      <div class="footer__bottom"><p>&copy; 2026 ECEVault. Made with ❤️ for ECE students everywhere.</p></div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="featuredGrid">
+      </div>
+
+      <div class="text-center mt-12 reveal">
+        <a href="materials.html" class="inline-flex items-center gap-2 bg-slate-900 hover:bg-brand-primary text-white font-semibold text-sm px-8 py-3.5 rounded-full shadow-md hover:shadow-glow-blue transition-all duration-300">
+          <span>Browse All 500+ Study Materials</span>
+          <iconify-icon icon="lucide:arrow-right"></iconify-icon>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 3-STEP FLOW -->
+  <section class="py-20 bg-slate-50 border-t border-slate-200/80">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+        <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">
+          How to Unlock ECEvault
+        </h2>
+        <p class="text-brand-gray text-base mt-2">
+          Find, preview, and download your course materials in seconds.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
+        
+        <div class="reveal delay-1 bg-white p-8 rounded-3xl border border-slate-200 shadow-sm text-center relative">
+          <div class="w-12 h-12 rounded-full bg-brand-primary/10 text-brand-primary font-heading font-extrabold text-lg flex items-center justify-center mx-auto mb-6">
+            1
+          </div>
+          <h3 class="text-lg font-bold text-slate-900 mb-2">Pick Your Semester</h3>
+          <p class="text-sm text-brand-gray">
+            Choose from Semester 1 through Semester 8 to filter your department’s exact syllabus.
+          </p>
+        </div>
+
+        <div class="reveal delay-2 bg-white p-8 rounded-3xl border border-slate-200 shadow-sm text-center relative">
+          <div class="w-12 h-12 rounded-full bg-brand-cyan/10 text-brand-cyan font-heading font-extrabold text-lg flex items-center justify-center mx-auto mb-6">
+            2
+          </div>
+          <h3 class="text-lg font-bold text-slate-900 mb-2">Select Subject &amp; Unit</h3>
+          <p class="text-sm text-brand-gray">
+            Filter by Lecture Notes, Solved Question Papers, or Lab Manuals for specific units.
+          </p>
+        </div>
+
+        <div class="reveal delay-3 bg-white p-8 rounded-3xl border border-slate-200 shadow-sm text-center relative">
+          <div class="w-12 h-12 rounded-full bg-brand-amber/15 text-brand-amber font-heading font-extrabold text-lg flex items-center justify-center mx-auto mb-6">
+            3
+          </div>
+          <h3 class="text-lg font-bold text-slate-900 mb-2">Preview &amp; Download</h3>
+          <p class="text-sm text-brand-gray">
+            Preview the document in high-res inside your browser or download the full PDF offline.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="py-20 relative overflow-hidden bg-gradient-to-br from-brand-deep via-brand-primary to-blue-700 text-white">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 reveal">
+      
+      <div class="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center mx-auto mb-6 text-brand-amber">
+        <iconify-icon icon="lucide:vault" width="34" height="34"></iconify-icon>
+      </div>
+
+      <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight mb-4">
+        Ready to Ace Your ECE Exams?
+      </h2>
+      <p class="text-blue-100 text-base sm:text-lg max-w-2xl mx-auto mb-10 leading-relaxed font-normal">
+        Join over 15,000+ engineering students studying smarter with ECEvault's open-access repository.
+      </p>
+
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a href="materials.html" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-brand-amber hover:bg-amber-400 text-slate-900 font-bold px-8 py-4 rounded-full shadow-glow-amber transition-all duration-300 hover:scale-105">
+          <iconify-icon icon="lucide:unlock" width="18" height="18"></iconify-icon>
+          <span>Unlock Knowledge Vault</span>
+        </a>
+        <a href="syllabus.html" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 border border-white/30 text-white font-semibold px-8 py-4 rounded-full transition-all">
+          <span>Check ECE Syllabus</span>
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="bg-white border-t border-slate-200 py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="grid grid-cols-1 md:grid-cols-5 gap-10 mb-12">
+        
+        <div class="md:col-span-2">
+          <a href="index.html" class="flex items-center gap-2.5 mb-4">
+            <div class="w-9 h-9 rounded-xl bg-brand-primary flex items-center justify-center text-white">
+              <iconify-icon icon="lucide:vault" width="20" height="20"></iconify-icon>
+            </div>
+            <span class="font-heading font-extrabold text-xl text-slate-900">
+              ECE<span class="text-brand-primary">vault</span>
+            </span>
+          </a>
+          <p class="text-sm text-brand-gray max-w-sm leading-relaxed mb-6">
+            Unlock the Vault of ECE Knowledge. A premier, free, student-built academic repository empowering undergraduate Electronics and Communication Engineering scholars.
+          </p>
+          <div class="flex items-center gap-3 text-slate-400">
+            <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Verified Open Access Portal</span>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-heading font-bold text-sm text-slate-900 uppercase tracking-wider mb-4">Quick Links</h4>
+          <ul class="space-y-2.5 text-sm text-brand-gray">
+            <li><a href="materials.html" class="hover:text-brand-primary transition-colors">Study Materials</a></li>
+            <li><a href="papers.html" class="hover:text-brand-primary transition-colors">Question Papers</a></li>
+            <li><a href="lab-manuals.html" class="hover:text-brand-primary transition-colors">Lab Manuals</a></li>
+            <li><a href="syllabus.html" class="hover:text-brand-primary transition-colors">Curriculum Syllabus</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-heading font-bold text-sm text-slate-900 uppercase tracking-wider mb-4">Semesters</h4>
+          <ul class="space-y-2.5 text-sm text-brand-gray">
+            <li><a href="semester.html?sem=1" class="hover:text-brand-primary transition-colors">Semester 1</a></li>
+            <li><a href="semester.html?sem=2" class="hover:text-brand-primary transition-colors">Semester 2</a></li>
+            <li><a href="semester.html?sem=3" class="hover:text-brand-primary transition-colors">Semester 3</a></li>
+            <li><a href="semester.html?sem=4" class="hover:text-brand-primary transition-colors">Semester 4</a></li>
+            <li><a href="semester.html?sem=5" class="hover:text-brand-primary transition-colors">Semester 5 &bull; 6</a></li>
+            <li><a href="semester.html?sem=7" class="hover:text-brand-primary transition-colors">Semester 7 &bull; 8</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-heading font-bold text-sm text-slate-900 uppercase tracking-wider mb-4">Platform</h4>
+          <ul class="space-y-2.5 text-brand-gray text-sm">
+            <li><a href="about.html" class="hover:text-brand-primary transition-colors">About ECEvault</a></li>
+            <li><a href="about.html#contact" class="hover:text-brand-primary transition-colors">Contribute Notes</a></li>
+            <li><a href="about.html#faq" class="hover:text-brand-primary transition-colors">FAQ &amp; Help</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="pt-8 border-t border-slate-200/80 flex flex-col sm:flex-row items-center justify-between text-xs text-brand-gray gap-4">
+        <div>
+          &copy; 2026 ECEvault. Unlock the Vault of ECE Knowledge. All rights reserved.
+        </div>
+        <div class="flex items-center gap-6">
+          <span>Crafted with ❤️ for ECE students</span>
+        </div>
+      </div>
+
     </div>
   </footer>
+
   <script src="js/data.js"></script>
   <script src="js/components.js"></script>
   <script src="js/app.js"></script>
-  <script src="js/pages/home.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+
+      const revealObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.12,
+        rootMargin: '0px 0px -40px 0px'
+      });
+
+      revealElements.forEach(el => revealObserver.observe(el));
+
+      const bubbles = document.querySelectorAll('.parallax-bubble');
+      window.addEventListener('mousemove', (e) => {
+        const mouseX = (e.clientX / window.innerWidth) - 0.5;
+        const mouseY = (e.clientY / window.innerHeight) - 0.5;
+
+        bubbles.forEach(bubble => {
+          const speed = parseFloat(bubble.getAttribute('data-speed')) || 1;
+          const x = mouseX * 45 * speed;
+          const y = mouseY * 45 * speed;
+          bubble.style.transform = `translate(${x}px, ${y}px)`;
+        });
+      });
+
+      const menuBtn = document.getElementById('mobileMenuBtn');
+      const mobileMenu = document.getElementById('mobileMenu');
+      if (menuBtn && mobileMenu) {
+        menuBtn.addEventListener('click', () => {
+          mobileMenu.classList.toggle('hidden');
+        });
+      }
+
+      const mobSearch = document.getElementById('mobileSearch');
+      if (mobSearch) {
+        mobSearch.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            const q = mobSearch.value.trim();
+            if (q) window.location.href = `materials.html?search=${encodeURIComponent(q)}`;
+          }
+        });
+      }
+
+      const semesterContainer = document.getElementById('semesterGrid');
+      if (semesterContainer && typeof ECE_DATA !== 'undefined') {
+        semesterContainer.innerHTML = ECE_DATA.semesters.map((sem, idx) => {
+          const delayClass = `delay-${(idx % 4) + 1}`;
+          return `
+            <a href="semester.html?sem=${sem.id}" class="reveal ${delayClass} group relative p-6 rounded-3xl bg-white border border-slate-200/90 hover:border-brand-primary/50 shadow-card-soft hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-4">
+                  <div class="w-12 h-12 rounded-2xl bg-blue-50 text-brand-primary font-heading font-extrabold text-xl flex items-center justify-center group-hover:bg-brand-primary group-hover:text-white transition-all duration-300 shadow-sm">
+                    0${sem.id}
+                  </div>
+                  <span class="text-xs font-semibold px-2.5 py-1 rounded-full bg-slate-100 text-slate-600 group-hover:bg-blue-50 group-hover:text-brand-primary transition-colors">
+                    ${sem.subjects.length} Subjects
+                  </span>
+                </div>
+                <h3 class="text-lg font-bold text-slate-900 group-hover:text-brand-primary transition-colors font-heading mb-1.5">
+                  ${sem.label}
+                </h3>
+                <p class="text-xs text-brand-gray line-clamp-2">
+                  ${sem.subjects.map(s => s.code).slice(0, 3).join(', ')} and more
+                </p>
+              </div>
+
+              <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-brand-primary">
+                <span>Unlock Modules</span>
+                <iconify-icon icon="lucide:arrow-right" class="group-hover:translate-x-1 transition-transform"></iconify-icon>
+              </div>
+            </a>
+          `;
+        }).join('');
+      }
+
+      const featuredContainer = document.getElementById('featuredGrid');
+      if (featuredContainer && typeof getMaterials === 'function') {
+        const featuredList = getMaterials({ featured: true }).slice(0, 6);
+        featuredContainer.innerHTML = featuredList.map((mat, idx) => {
+          const subj = typeof getSubject === 'function' ? getSubject(mat.subjectId) : null;
+          const delayClass = `delay-${(idx % 3) + 1}`;
+          return `
+            <div class="reveal ${delayClass} group p-6 rounded-3xl bg-white border border-slate-200 hover:border-brand-primary/50 shadow-card-soft hover:shadow-card-hover transition-all duration-300 flex flex-col justify-between">
+              <div>
+                <div class="flex items-start justify-between gap-3 mb-3">
+                  <span class="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-blue-50 text-brand-primary">
+                    Sem ${mat.semester} &bull; ${mat.type.toUpperCase()}
+                  </span>
+                  <span class="text-xs font-medium text-slate-400">${mat.size}</span>
+                </div>
+                <h3 class="text-base font-bold text-slate-900 group-hover:text-brand-primary transition-colors font-heading mb-1 line-clamp-2">
+                  ${mat.title}
+                </h3>
+                <p class="text-xs font-medium text-brand-gray mb-3">
+                  ${subj ? subj.name : 'Electronics & Communication'}
+                </p>
+                <p class="text-xs text-slate-500 line-clamp-2 leading-relaxed mb-6">
+                  ${mat.description}
+                </p>
+              </div>
+
+              <div class="pt-4 border-t border-slate-100 flex items-center gap-3">
+                <a href="preview.html?id=${mat.id}" class="flex-1 text-center py-2 px-3 rounded-xl border border-slate-200 hover:border-brand-primary text-xs font-semibold text-slate-700 hover:text-brand-primary transition-all">
+                  Preview
+                </a>
+                <button onclick="handleDownload('${mat.id}')" class="flex-1 py-2 px-3 rounded-xl bg-brand-primary hover:bg-brand-deep text-white text-xs font-semibold shadow-sm hover:shadow-glow-blue transition-all flex items-center justify-center gap-1.5">
+                  <iconify-icon icon="lucide:download" width="14" height="14"></iconify-icon>
+                  <span>Download</span>
+                </button>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      document.querySelectorAll('#semesterGrid .reveal, #featuredGrid .reveal').forEach(el => revealObserver.observe(el));
+    });
+  </script>
 </body>
 </html>
