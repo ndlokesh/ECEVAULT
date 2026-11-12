@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Study Materials — ECEVault</title>
+  <meta name="description" content="Browse ECE study materials — notes, question papers, lab manuals filtered by semester, subject, and unit." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/design-tokens.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="container navbar__inner">
+      <a href="index.html" class="navbar__brand"><svg class="navbar__logo-icon" viewBox="0 0 32 32" width="32" height="32" fill="none"><rect width="32" height="32" rx="8" fill="#2563EB"/><path d="M8 10h16M8 16h12M8 22h14" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg><span class="navbar__logo-text">ECE<span class="navbar__logo-accent">Vault</span></span></a>
+      <div class="navbar__search" id="navbarSearch"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" id="globalSearch" class="navbar__search-input" placeholder="Search materials, subjects…" autocomplete="off" /></div>
+      <ul class="navbar__links" id="navLinks">
+        <li><a href="index.html" class="navbar__link">Home</a></li>
+        <li><a href="materials.html" class="navbar__link navbar__link--active">Study Materials</a></li>
+        <li><a href="papers.html" class="navbar__link">Question Papers</a></li>
+        <li><a href="lab-manuals.html" class="navbar__link">Lab Manuals</a></li>
+        <li><a href="syllabus.html" class="navbar__link">Syllabus</a></li>
+        <li><a href="about.html" class="navbar__link">About</a></li>
+      </ul>
+      <button class="navbar__hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+  <main class="page-content">
+    <div class="container">
+      <nav class="breadcrumbs" id="breadcrumbs"></nav>
+      <div class="page-header">
+        <h1 class="page-header__title">Study Materials</h1>
+        <p class="page-header__subtitle">Browse all ECE study resources — filter by semester, subject, type, and more.</p>
+      </div>
+      <div style="margin-bottom: var(--space-6);"><div class="search-bar" style="margin: 0 auto;"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" class="search-bar__input" id="materialSearch" placeholder="Search by title, subject, or keyword…" autocomplete="off" /></div></div>
+      <div id="filterContainer"></div>
+      <div class="results-info" id="resultsInfo"><span class="results-info__count" id="resultCount"></span><div class="results-info__sort">Sort: <select id="sortSelect"><option value="downloads">Most Popular</option><option value="name">Name (A-Z)</option></select></div></div>
+      <div class="materials-grid" id="materialsGrid"></div>
+      <div class="empty-state" id="emptyState" style="display:none;"><div class="empty-state__icon"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div><h3 class="empty-state__title">No materials found</h3><p class="empty-state__desc">Try adjusting your filters or search terms.</p></div>
+      <div class="pagination" id="pagination"></div>
+    </div>
+  </main>
+  <footer class="footer"><div class="container"><div class="footer__grid"><div class="footer__brand"><a href="index.html" class="navbar__brand"><svg class="navbar__logo-icon" viewBox="0 0 32 32" width="28" height="28" fill="none"><rect width="32" height="32" rx="8" fill="#2563EB"/><path d="M8 10h16M8 16h12M8 22h14" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg><span class="navbar__logo-text">ECE<span class="navbar__logo-accent">Vault</span></span></a><p class="footer__tagline">Your one-stop destination for ECE study resources.</p></div><div class="footer__col"><h4 class="footer__heading">Quick Links</h4><ul class="footer__list"><li><a href="materials.html">Study Materials</a></li><li><a href="papers.html">Question Papers</a></li><li><a href="lab-manuals.html">Lab Manuals</a></li><li><a href="syllabus.html">Syllabus</a></li></ul></div><div class="footer__col"><h4 class="footer__heading">Semesters</h4><ul class="footer__list"><li><a href="semester.html?sem=1">Semester 1</a></li><li><a href="semester.html?sem=2">Semester 2</a></li><li><a href="semester.html?sem=3">Semester 3</a></li><li><a href="semester.html?sem=4">Semester 4</a></li><li><a href="semester.html?sem=5">Semester 5</a></li><li><a href="semester.html?sem=6">Semester 6</a></li><li><a href="semester.html?sem=7">Semester 7</a></li><li><a href="semester.html?sem=8">Semester 8</a></li></ul></div><div class="footer__col"><h4 class="footer__heading">About</h4><ul class="footer__list"><li><a href="about.html">About ECEVault</a></li></ul></div></div><div class="footer__bottom"><p>&copy; 2026 ECEVault. Made with ❤️ for ECE students everywhere.</p></div></div></footer>
+  <script src="js/data.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/pages/materials.js"></script>
+</body>
+</html>
