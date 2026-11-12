@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Portal — ECEVault</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/design-tokens.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <style>
+    body { background-color: #F8FAFC; min-height: 100vh; }
+    .admin-navbar { background: #FFFFFF; border-bottom: 1px solid var(--color-border); height: 68px; display: flex; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-xs); }
+    .admin-navbar__inner { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+    .admin-badge { background: #FEF3C7; color: #92400E; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; padding: 3px 8px; border-radius: var(--radius-sm); margin-left: 8px; display: inline-flex; align-items: center; gap: 4px; }
+    .auth-container { min-height: calc(100vh - 70px); display: flex; align-items: center; justify-content: center; padding: var(--space-6); }
+    .auth-card { background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-2xl); padding: var(--space-10); max-width: 440px; width: 100%; box-shadow: var(--shadow-xl); text-align: center; }
+    .auth-icon { width: 64px; height: 64px; background: var(--color-primary-light); color: var(--color-primary); border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-6); }
+    .auth-input { width: 100%; background: var(--color-bg); border: 1.5px solid var(--color-border); border-radius: var(--radius-lg); padding: 14px 16px; font-size: var(--font-size-base); color: var(--color-text); margin-bottom: var(--space-4); text-align: center; letter-spacing: 2px; }
+    .auth-input:focus { border-color: var(--color-primary); background: #FFFFFF; box-shadow: 0 0 0 3px rgba(37,99,235,0.15); }
+    .admin-dashboard { display: none; padding: var(--space-8) 0 var(--space-20); }
+    .admin-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-6); margin-bottom: var(--space-8); }
+    .admin-stat-card { background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--space-6); box-shadow: var(--shadow-sm); display: flex; align-items: center; gap: var(--space-4); }
+    .admin-stat-icon { width: 50px; height: 50px; border-radius: var(--radius-lg); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .admin-stat-num { font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); color: var(--color-text); line-height: 1.1; }
+    .admin-stat-label { font-size: var(--font-size-xs); color: var(--color-text-secondary); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; margin-top: 2px; }
+    .admin-tabs { display: flex; gap: var(--space-2); border-bottom: 2px solid var(--color-border); margin-bottom: var(--space-8); overflow-x: auto; padding-bottom: 2px; }
+    .admin-tab { padding: var(--space-3) var(--space-6); font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); color: var(--color-text-secondary); border-radius: var(--radius-lg) var(--radius-lg) 0 0; border: 1px solid transparent; border-bottom: none; background: transparent; cursor: pointer; display: flex; align-items: center; gap: var(--space-2); white-space: nowrap; }
+    .admin-tab--active { color: var(--color-primary); background: #FFFFFF; border-color: var(--color-border); border-bottom: 2px solid #FFFFFF; margin-bottom: -2px; }
+    .admin-pane { display: none; }
+    .admin-pane--active { display: block; }
+    .form-card { background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-2xl); padding: var(--space-8); box-shadow: var(--shadow-sm); }
+    .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-6); }
+    .form-group { display: flex; flex-direction: column; gap: var(--space-2); }
+    .form-group--full { grid-column: span 2; }
+    .form-label { font-size: var(--font-size-sm); font-weight: var(--font-weight-semibold); color: var(--color-text); display: flex; align-items: center; gap: 6px; }
+    .form-input, .form-select, .form-textarea { width: 100%; background: var(--color-bg); border: 1.5px solid var(--color-border); border-radius: var(--radius-lg); padding: 10px 14px; font-size: var(--font-size-sm); color: var(--color-text); }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--color-primary); background: #FFFFFF; }
+    .form-textarea { min-height: 90px; resize: vertical; }
+    .dropzone { border: 2px dashed #93C5FD; background: #EFF6FF; border-radius: var(--radius-xl); padding: var(--space-8); text-align: center; cursor: pointer; position: relative; }
+    .dropzone input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+    .dropzone-file-info { display: none; background: #FFFFFF; border: 1px solid #BFDBFE; padding: 10px 16px; border-radius: var(--radius-md); margin-top: var(--space-3); font-size: var(--font-size-xs); color: var(--color-primary); font-weight: var(--font-weight-semibold); align-items: center; justify-content: space-between; }
+    .admin-table-container { background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-2xl); overflow: hidden; }
+    .admin-table { width: 100%; border-collapse: collapse; text-align: left; font-size: var(--font-size-sm); }
+    .admin-table th { background: #F1F5F9; color: var(--color-text); font-weight: var(--font-weight-semibold); padding: var(--space-4) var(--space-5); border-bottom: 1px solid var(--color-border); }
+    .admin-table td { padding: var(--space-4) var(--space-5); border-bottom: 1px solid var(--color-border); color: var(--color-text); vertical-align: middle; }
+    .code-box { background: #0F172A; color: #F8FAFC; border-radius: var(--radius-xl); padding: var(--space-6); font-family: 'Fira Code', monospace; font-size: 13px; line-height: 1.6; overflow-x: auto; max-height: 480px; }
+    @media (max-width: 900px) { .admin-stats-grid { grid-template-columns: repeat(2, 1fr); } .form-grid { grid-template-columns: 1fr; } .form-group--full { grid-column: span 1; } }
+    @media (max-width: 600px) { .admin-stats-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header class="admin-navbar">
+    <div class="container admin-navbar__inner">
+      <div style="display:flex; align-items:center;">
+        <a href="index.html" class="navbar__brand" title="Back to site">
+          <svg class="navbar__logo-icon" viewBox="0 0 32 32" width="30" height="30" fill="none"><rect width="32" height="32" rx="8" fill="#2563EB"/><path d="M8 10h16M8 16h12M8 22h14" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/></svg>
+          <span class="navbar__logo-text">ECE<span class="navbar__logo-accent">Vault</span></span>
+        </a>
+        <span class="admin-badge">Admin Portal</span>
+      </div>
+      <div style="display:flex; align-items:center; gap:var(--space-3);" id="navActions">
+        <a href="index.html" target="_blank" class="btn btn--outline btn--sm">View Public Site</a>
+        <button class="btn btn--outline btn--sm" id="btnLogout" style="display:none;">Log Out</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="auth-container" id="authScreen">
+    <div class="auth-card">
+      <div class="auth-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+      <h1 style="font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); color: var(--color-text); margin-bottom: var(--space-2);">Administrator Access</h1>
+      <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); margin-bottom: var(--space-6); line-height: 1.5;">This portal is restricted to the site owner. Please enter your secret admin PIN.</p>
+      <form id="authForm" onsubmit="event.preventDefault(); verifyPin();">
+        <input type="password" id="adminPinInput" class="auth-input" placeholder="••••••••" autocomplete="current-password" autofocus />
+        <button type="submit" class="btn btn--primary btn--lg" style="width:100%; justify-content:center;">Unlock Admin Dashboard</button>
+      </form>
+      <div id="authError" style="display:none; color:var(--color-red); font-size:var(--font-size-xs); font-weight:600; margin-top:var(--space-3);">Incorrect PIN. Please try again.</div>
+      <div style="font-size: 11px; color: var(--color-text-muted); margin-top: var(--space-6);">Default PIN: <code style="background:#F1F5F9; padding:2px 6px; border-radius:4px;">ecevault2026</code></div>
+    </div>
+  </section>
+
+  <main class="admin-dashboard" id="dashboardScreen">
+    <div class="container">
+      <div class="admin-stats-grid">
+        <div class="admin-stat-card"><div class="admin-stat-icon" style="background:#EFF6FF; color:#2563EB;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div><div class="admin-stat-num" id="statTotalMats">22</div><div class="admin-stat-label">Total Materials</div></div></div>
+        <div class="admin-stat-card"><div class="admin-stat-icon" style="background:#DCFCE7; color:#16A34A;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div><div><div class="admin-stat-num" id="statCustomMats">0</div><div class="admin-stat-label">Admin Uploads</div></div></div>
+        <div class="admin-stat-card"><div class="admin-stat-icon" style="background:#CFFAFE; color:#0891B2;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div><div><div class="admin-stat-num" id="statSubjects">45</div><div class="admin-stat-label">Subjects</div></div></div>
+        <div class="admin-stat-card"><div class="admin-stat-icon" style="background:#EDE9FE; color:#7C3AED;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><div><div class="admin-stat-num" style="color:var(--color-green);">Active</div><div class="admin-stat-label">Live Sync Status</div></div></div>
+      </div>
+
+      <nav class="admin-tabs">
+        <button class="admin-tab admin-tab--active" data-pane="paneUpload">Upload New Material</button>
+        <button class="admin-tab" data-pane="paneManage">Manage Uploads (<span id="manageCount">0</span>)</button>
+        <button class="admin-tab" data-pane="paneExport">Export / Sync to GitHub</button>
+        <button class="admin-tab" data-pane="paneSettings">Settings &amp; Security</button>
+      </nav>
+
+      <section class="admin-pane admin-pane--active" id="paneUpload">
+        <div class="form-card">
+          <div style="margin-bottom: var(--space-6);"><h2 style="font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--color-text);">Publish New Study Resource</h2><p style="font-size: var(--font-size-sm); color: var(--color-text-secondary);">Uploaded materials immediately appear on your website for users to view and download.</p></div>
+          <form id="materialUploadForm">
+            <div class="form-grid">
+              <div class="form-group form-group--full"><label class="form-label">Document Title *</label><input type="text" id="matTitle" class="form-input" placeholder="e.g., Electromagnetic Waves – Unit 2 Notes" required /></div>
+              <div class="form-group"><label class="form-label">Target Semester *</label><select id="matSemester" class="form-select" required onchange="populateSubjectDropdown(this.value)"><option value="">-- Choose Semester --</option><option value="1">Semester 1</option><option value="2">Semester 2</option><option value="3">Semester 3</option><option value="4">Semester 4</option><option value="5">Semester 5</option><option value="6">Semester 6</option><option value="7">Semester 7</option><option value="8">Semester 8</option></select></div>
+              <div class="form-group"><label class="form-label">Subject / Course *</label><select id="matSubject" class="form-select" required><option value="">-- Select Semester First --</option></select></div>
+              <div class="form-group"><label class="form-label">Resource Category *</label><select id="matType" class="form-select" required><option value="notes">Lecture Notes</option><option value="paper">Previous Year Question Paper</option><option value="lab">Lab Manual / Experiment</option><option value="syllabus">Syllabus Breakdown</option></select></div>
+              <div class="form-group"><label class="form-label">Unit / Module</label><select id="matUnit" class="form-select"><option value="all">Complete All Units</option><option value="1">Unit 1</option><option value="2">Unit 2</option><option value="3">Unit 3</option><option value="4">Unit 4</option><option value="5">Unit 5</option></select></div>
+              <div class="form-group form-group--full"><label class="form-label">Attach File (PDF, DOCX, PPT)</label><div class="dropzone" id="fileDropZone"><input type="file" id="matFilePicker" accept=".pdf,.doc,.docx,.ppt,.pptx" /><div style="font-weight:600;">Click to browse or drag &amp; drop file here</div><div class="dropzone-file-info" id="fileInfoBadge"><span id="fileNameDisplay">filename.pdf</span><span id="fileSizeDisplay">0 MB</span></div></div></div>
+              <div class="form-group"><label class="form-label">Or External Cloud Link (Google Drive / S3)</label><input type="url" id="matFileUrl" class="form-input" placeholder="https://drive.google.com/..." /></div>
+              <div class="form-group"><label class="form-label">File Size Display</label><input type="text" id="matSize" class="form-input" value="3.5 MB" /></div>
+              <div class="form-group form-group--full"><label class="form-label">Brief Description</label><textarea id="matDescription" class="form-textarea" placeholder="Detailed notes covering topics…"></textarea></div>
+              <div class="form-group form-group--full" style="flex-direction:row; align-items:center; gap:var(--space-2);"><input type="checkbox" id="matFeatured" /><label for="matFeatured" style="font-size:var(--font-size-sm);">Feature this resource on the Homepage</label></div>
+            </div>
+            <div style="margin-top: var(--space-8); display:flex; gap:var(--space-4); border-top: 1px solid var(--color-border); padding-top: var(--space-6);"><button type="submit" class="btn btn--primary btn--md">Publish Material to Vault</button><button type="button" class="btn btn--outline btn--md" onclick="resetForm()">Clear Form</button></div>
+          </form>
+        </div>
+      </section>
+
+      <section class="admin-pane" id="paneManage">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-6);"><h2 style="font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--color-text);">Admin Uploaded Materials</h2><button class="btn btn--primary btn--sm" onclick="switchTab('paneUpload')">+ Upload Another</button></div>
+        <div class="admin-table-container"><table class="admin-table"><thead><tr><th>Title</th><th>Semester</th><th>Subject</th><th>Type</th><th>Size</th><th style="text-align:right;">Actions</th></tr></thead><tbody id="materialsTableBody"></tbody></table><div id="noUploadsMessage" style="padding:var(--space-12); text-align:center; color:var(--color-text-secondary); display:none;"><p style="font-weight:600;">No custom materials uploaded yet</p></div></div>
+      </section>
+
+      <section class="admin-pane" id="paneExport">
+        <div class="form-card"><h2 style="font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--color-text); margin-bottom: var(--space-4);">Export to GitHub Repository</h2><p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); margin-bottom: var(--space-4);">Copy this clean snippet into <code style="background:#F1F5F9; padding:2px 6px;">js/data.js</code> whenever you want to permanently commit files to GitHub.</p><div style="display:flex; gap:var(--space-3); margin-bottom:var(--space-4);"><button class="btn btn--primary btn--sm" onclick="copyExportCode()">Copy JavaScript Code</button><button class="btn btn--outline btn--sm" onclick="downloadExportJson()">Download JSON</button></div><pre class="code-box" id="exportCodeBlock"></pre></div>
+      </section>
+
+      <section class="admin-pane" id="paneSettings">
+        <div class="form-card" style="max-width: 600px;"><h2 style="font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--color-text); margin-bottom: var(--space-4);">Security Settings</h2><div style="margin-bottom: var(--space-6);"><label class="form-label">Update Admin PIN</label><div style="display:flex; gap:var(--space-3);"><input type="password" id="newPinInput" class="form-input" placeholder="Enter new secret PIN" /><button class="btn btn--primary btn--md" onclick="updateAdminPin()">Save New PIN</button></div></div><div style="padding-top:var(--space-6); border-top:1px solid var(--color-border);"><button class="btn btn--outline btn--sm" style="color:var(--color-red); border-color:#FCA5A5;" onclick="clearAllCustomData()">Clear All Custom Uploads</button></div></div>
+      </section>
+    </div>
+  </main>
+
+  <script src="js/data.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    const DEFAULT_PIN = 'ecevault2026';
+    function getStoredPin() { return localStorage.getItem('ecevault_admin_pin') || DEFAULT_PIN; }
+    function checkAuth() {
+      const isAuth = sessionStorage.getItem('ecevault_admin_auth') === 'true';
+      if (isAuth) {
+        document.getElementById('authScreen').style.display = 'none';
+        document.getElementById('dashboardScreen').style.display = 'block';
+        document.getElementById('btnLogout').style.display = 'inline-flex';
+        initDashboard();
+      } else {
+        document.getElementById('authScreen').style.display = 'flex';
+        document.getElementById('dashboardScreen').style.display = 'none';
+        document.getElementById('btnLogout').style.display = 'none';
+      }
+    }
+    function verifyPin() {
+      const entered = document.getElementById('adminPinInput').value.trim();
+      if (entered === getStoredPin()) {
+        sessionStorage.setItem('ecevault_admin_auth', 'true');
+        document.getElementById('authError').style.display = 'none';
+        showToast('Access granted. Welcome, Admin!', 'success');
+        checkAuth();
+      } else {
+        document.getElementById('authError').style.display = 'block';
+        document.getElementById('adminPinInput').value = '';
+      }
+    }
+    document.getElementById('btnLogout').addEventListener('click', () => {
+      sessionStorage.removeItem('ecevault_admin_auth');
+      showToast('Logged out.', 'info');
+      checkAuth();
+    });
+    function updateAdminPin() {
+      const newPin = document.getElementById('newPinInput').value.trim();
+      if (newPin.length < 4) { alert('PIN must be at least 4 characters.'); return; }
+      localStorage.setItem('ecevault_admin_pin', newPin);
+      document.getElementById('newPinInput').value = '';
+      showToast('Admin PIN updated!', 'success');
+    }
+
+    let uploadedFileData = null;
+    function initDashboard() { updateStats(); renderUploadedTable(); updateExportBlock(); populateSubjectDropdown(1); }
+    document.querySelectorAll('.admin-tab').forEach(tab => {
+      tab.addEventListener('click', () => switchTab(tab.dataset.pane));
+    });
+    function switchTab(paneId) {
+      document.querySelectorAll('.admin-tab').forEach(t => t.classList.toggle('admin-tab--active', t.dataset.pane === paneId));
+      document.querySelectorAll('.admin-pane').forEach(p => p.classList.toggle('admin-pane--active', p.id === paneId));
+      if (paneId === 'paneManage') renderUploadedTable();
+      if (paneId === 'paneExport') updateExportBlock();
+    }
+    function populateSubjectDropdown(semNum) {
+      const select = document.getElementById('matSubject');
+      const sem = getSemester(Number(semNum));
+      if (!sem) { select.innerHTML = '<option value="">-- Select Semester First --</option>'; return; }
+      select.innerHTML = sem.subjects.map(s => `<option value="${s.id}">${s.code} - ${s.name}</option>`).join('') + '<option value="s-custom">Other / Custom Course</option>';
+    }
+    const dropZone = document.getElementById('fileDropZone');
+    const filePicker = document.getElementById('matFilePicker');
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) handleFileSelection(e.dataTransfer.files[0]);
+    });
+    filePicker.addEventListener('change', (e) => {
+      if (e.target.files && e.target.files[0]) handleFileSelection(e.target.files[0]);
+    });
+    function handleFileSelection(file) {
+      const sizeMB = (file.size / (1024 * 1024)).toFixed(1);
+      document.getElementById('fileNameDisplay').textContent = file.name;
+      document.getElementById('fileSizeDisplay').textContent = sizeMB + ' MB';
+      document.getElementById('fileInfoBadge').style.display = 'flex';
+      document.getElementById('matSize').value = sizeMB + ' MB';
+      const titleInput = document.getElementById('matTitle');
+      if (!titleInput.value) titleInput.value = file.name.replace(/\.[^/.]+$/, "").replace(/[-_]/g, ' ');
+      const reader = new FileReader();
+      reader.onload = function(e) { uploadedFileData = { name: file.name, dataUrl: e.target.result, size: sizeMB + ' MB' }; };
+      reader.readAsDataURL(file);
+    }
+    document.getElementById('materialUploadForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const title = document.getElementById('matTitle').value.trim();
+      const semester = parseInt(document.getElementById('matSemester').value);
+      const subjectId = document.getElementById('matSubject').value;
+      const type = document.getElementById('matType').value;
+      const unit = document.getElementById('matUnit').value;
+      const size = document.getElementById('matSize').value.trim() || '3.2 MB';
+      const fileUrl = document.getElementById('matFileUrl').value.trim();
+      const description = document.getElementById('matDescription').value.trim() || 'Comprehensive study resource covering key syllabus units.';
+      const featured = document.getElementById('matFeatured').checked;
+      const newMaterial = {
+        id: 'm_' + Date.now(),
+        title, semester, subjectId, type,
+        unit: unit === 'all' ? 'all' : parseInt(unit),
+        format: 'pdf', size, downloads: 0, featured, description,
+        dataUrl: uploadedFileData ? uploadedFileData.dataUrl : null,
+        fileName: uploadedFileData ? uploadedFileData.name : `${title.replace(/[^a-zA-Z0-9_-]/g, '_')}.pdf`,
+        fileUrl: fileUrl || null,
+        createdAt: new Date().toISOString()
+      };
+      const customList = getCustomMaterials();
+      customList.unshift(newMaterial);
+      saveCustomMaterials(customList);
+      showToast('🎉 "' + title + '" published!', 'success');
+      resetForm();
+      updateStats();
+      switchTab('paneManage');
+    });
+    function resetForm() {
+      document.getElementById('materialUploadForm').reset();
+      document.getElementById('fileInfoBadge').style.display = 'none';
+      uploadedFileData = null;
+    }
+    function renderUploadedTable() {
+      const customList = getCustomMaterials();
+      const tbody = document.getElementById('materialsTableBody');
+      const emptyMsg = document.getElementById('noUploadsMessage');
+      document.getElementById('manageCount').textContent = customList.length;
+      if (customList.length === 0) { tbody.innerHTML = ''; emptyMsg.style.display = 'block'; return; }
+      emptyMsg.style.display = 'none';
+      tbody.innerHTML = customList.map(m => {
+        const subj = getSubject(m.subjectId) || { name: m.subjectId, code: 'EC' };
+        return `
+          <tr>
+            <td><div style="font-weight:600;">${m.title}</div><div style="font-size:12px; color:var(--color-text-secondary);">${m.description.slice(0, 60)}…</div></td>
+            <td><span class="badge badge--blue">Sem ${m.semester}</span></td>
+            <td><span class="badge badge--cyan">${subj.code}</span></td>
+            <td><span class="badge badge--violet">${getTypeLabel(m.type)}</span></td>
+            <td>${m.size}</td>
+            <td style="text-align:right;"><a href="preview.html?id=${m.id}" target="_blank" class="btn btn--outline btn--sm">Preview</a> <button class="btn btn--outline btn--sm" style="color:var(--color-red); border-color:#FECACA;" onclick="deleteMaterial('${m.id}')">Delete</button></td>
+          </tr>
+        `;
+      }).join('');
+    }
+    function deleteMaterial(id) {
+      if (!confirm('Remove this material?')) return;
+      let customList = getCustomMaterials().filter(m => m.id !== id);
+      saveCustomMaterials(customList);
+      showToast('Material deleted.', 'info');
+      updateStats();
+      renderUploadedTable();
+      updateExportBlock();
+    }
+    function clearAllCustomData() {
+      if (!confirm('Delete all custom uploaded materials?')) return;
+      saveCustomMaterials([]);
+      showToast('All custom materials cleared.', 'info');
+      updateStats();
+      renderUploadedTable();
+      updateExportBlock();
+    }
+    function updateStats() {
+      const customList = getCustomMaterials();
+      document.getElementById('statTotalMats').textContent = ECE_DATA.materials.length + customList.length;
+      document.getElementById('statCustomMats').textContent = customList.length;
+      document.getElementById('manageCount').textContent = customList.length;
+    }
+    function updateExportBlock() {
+      const customList = getCustomMaterials().map(m => { const c = { ...m }; delete c.dataUrl; return c; });
+      document.getElementById('exportCodeBlock').textContent = `// Paste into ECE_DATA.materials inside js/data.js:\n` + JSON.stringify(customList, null, 2);
+    }
+    function copyExportCode() {
+      navigator.clipboard.writeText(document.getElementById('exportCodeBlock').textContent).then(() => showToast('Copied to clipboard!', 'success'));
+    }
+    function downloadExportJson() {
+      const blob = new Blob([JSON.stringify(getCustomMaterials(), null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `ecevault_materials_${Date.now()}.json`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+    document.addEventListener('DOMContentLoaded', checkAuth);
+  </script>
+</body>
+</html>
