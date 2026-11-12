@@ -6,8 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('semesterTitle').textContent = sem.label;
   renderBreadcrumbs('breadcrumbs', [{ label: 'Home', href: 'index.html' }, { label: sem.label, href: `semester.html?sem=${sem.id}` }]);
   const grid = document.getElementById('subjectGrid');
+  const allMats = typeof getAllMaterials === 'function' ? getAllMaterials() : ECE_DATA.materials;
   grid.innerHTML = sem.subjects.map(subj => {
-    const matCount = ECE_DATA.materials.filter(m => m.subjectId === subj.id).length;
+    const matCount = allMats.filter(m => m.subjectId === subj.id).length;
     return `
       <a href="subject.html?id=${subj.id}" class="subject-card">
         <span class="subject-card__code">${subj.code}</span>

@@ -11,10 +11,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchInput = document.getElementById('materialSearch');
   if (searchInput) {
     if (urlSearch) searchInput.value = urlSearch;
+    let searchTimer = null;
     searchInput.addEventListener('input', () => {
-      currentFilters.search = searchInput.value.trim() || undefined;
-      currentPage = 1;
-      renderResults();
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(() => {
+        currentFilters.search = searchInput.value.trim() || undefined;
+        currentPage = 1;
+        renderResults();
+      }, 150);
     });
   }
   document.addEventListener('change', (e) => {
@@ -36,8 +40,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const pageResults = allResults.slice(start, start + ITEMS_PER_PAGE);
     const resultCount = document.getElementById('resultCount');
     if (resultCount) resultCount.textContent = `${allResults.length} materials found`;
-    if (pageResults.length === 0) { grid.innerHTML = ''; emptyState.style.display = 'block'; }
-    else { emptyState.style.display = 'none'; grid.innerHTML = pageResults.map(renderMaterialCard).join(''); }
-    renderPagination('pagination', currentPage, totalPages, (page) => { currentPage = page; renderResults(); });
+    if (pageResults.length === 0) { 
+      grid.innerHTML = ''; 
+      emptyState.style.display = 'block'; 
+    } else { 
+      emptyState.style.display = 'none'; 
+      grid.innerHTML = pageResults.map(renderMaterialCard).join(''); 
+    }
+    renderPagination('pagination', currentPage, totalPages, (page) => { 
+      currentPage = page; 
+      renderResults(); 
+      window.scrollTo({ top: 180, behavior: 'smooth' });
+    });
   }
 });
