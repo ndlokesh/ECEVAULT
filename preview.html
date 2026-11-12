@@ -4,7 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Document Preview — ECEVault</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="alternate icon" href="favicon.ico" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/design-tokens.css" />
@@ -66,7 +69,8 @@
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       const urlId = getUrlParam('id') || 'm001';
-      const material = ECE_DATA.materials.find(m => m.id === urlId) || ECE_DATA.materials[0];
+      const allMats = typeof getAllMaterials === 'function' ? getAllMaterials() : ECE_DATA.materials;
+      const material = allMats.find(m => m.id === urlId) || allMats[0];
       const subj = getSubject(material.subjectId) || { name: 'ECE', code: 'EC' };
       document.title = `${material.title} (Preview) — ECEVault`;
       document.getElementById('docTitle').textContent = material.title;
