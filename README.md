@@ -1,1 +1,30 @@
-IyBFQ0VWYXVsdAoKWW91ciBvbmUtc3RvcCBFQ0UgU3R1ZHkgUmVzb3VyY2UgSHViIOKAlCBmcmVlLCBvcGVuLCBhbmQgYnVpbHQgZm9yIHN0dWRlbnRzLgoKIyMgRmVhdHVyZXMKLSDwn5SaIFNlbWVzdGVyLXdpc2Ugc3R1ZHkgbWF0ZXJpYWxzIChTZW0gMeKAkzgpCi0g8J+UhCBQcmV2aW91cyB5ZWFyIHF1ZXN0aW9uIHBhcGVycwotIPCfkqwgTGFiIG1hbnVhbHMgd2l0aCBzdGVwLWJ5LXN0ZXAgcHJvY2VkdXJlcwotIPCfk4sgT2ZmaWNpYWwgRUNFIHN5bGxhYnVzCi0g8J+UjSBTZWFyY2ggJiBmaWx0ZXIgcmVzb3VyY2VzCi0g8J+Tk0Z1bGx5IHJlc3BvbnNpdmUgZGVzaWduCgojIyBUZWNoIFN0YWNrCi0gUHVyZSBIVE1MLCBDVFMsIEphdmFTY3JpcHQgKG5vIGZyYW1ld29ya3MpCi0gR29vZ2xlIEZvbnRzIChJbnRlcikKLSBSZXNwb25zaXZlIENTUyBHcmlkIGxheW91dAo=
+# ECEVault
+
+Your one-stop ECE Study Resource Hub — free, open, and built for students.
+
+## Features
+- 📚 Semester-wise study materials (Sem 1–8)
+- 📄 Previous year question papers
+- 🔬 Lab manuals with step-by-step procedures
+- 📋 Official ECE syllabus
+- 🔍 Search & filter resources
+- 📱 Fully responsive design
+
+## Pages
+- `index.html` — Home page
+- `materials.html` — Study Materials
+- `papers.html` — Question Papers
+- `lab-manuals.html` — Lab Manuals
+- `syllabus.html` — Syllabus & Curriculum
+- `semester.html` — Semester-wise view
+- `subject.html` — Subject-wise materials
+- `preview.html` — Document preview viewer
+- `about.html` — About ECEVault
+
+## Tech Stack
+- Pure HTML, CSS, JavaScript (no frameworks)
+- Google Fonts (Inter)
+- Responsive CSS Grid layout
+
+## Live Server
+Open `index.html` in a browser or serve with any static file server.
