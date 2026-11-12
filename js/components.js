@@ -49,7 +49,7 @@ function renderMaterialCard(material) {
           Preview
         </a>
         <button class="btn btn--primary btn--sm" onclick="handleDownload('${sanitizeHTML(material.id)}')">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Download
         </button>
         <span class="material-card__size">${safeSize}</span>
@@ -92,23 +92,14 @@ function renderFilters(containerId, options = {}) {
     `;
   }
 
-  if (options.subjects && Array.isArray(options.subjects)) {
-    html += `
-      <select class="filter-select" id="filterSubject" data-filter="subjectId">
-        <option value="">All Subjects</option>
-        ${options.subjects.map(s => `<option value="${s.id}">${sanitizeHTML(s.name)}</option>`).join('')}
-      </select>
-    `;
-  }
-
   if (showType) {
     html += `
       <select class="filter-select" id="filterType" data-filter="type">
-        <option value="">All Resource Types</option>
-        <option value="notes">Lecture Notes</option>
-        <option value="paper">Previous Year Papers</option>
+        <option value="">All Types</option>
+        <option value="notes">Notes</option>
+        <option value="paper">Question Papers</option>
         <option value="lab">Lab Manuals</option>
-        <option value="syllabus">Syllabus Breakdown</option>
+        <option value="syllabus">Syllabus</option>
       </select>
     `;
   }
@@ -127,32 +118,34 @@ function renderFilters(containerId, options = {}) {
   }
 
   html += `
-    <select class="filter-select" id="filterFormat" data-filter="format">
-      <option value="">All Formats</option>
-      <option value="pdf">PDF Documents</option>
-      <option value="doc">DOC / Word</option>
-      <option value="ppt">PPT Slides</option>
-    </select>
-  `;
+    <button class="filter-clear" id="clearFilters" style="display:none;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      Clear Filters
+    </button>
+  </div>`;
 
-  html += '</div>';
   container.innerHTML = html;
 }
 
 /* ── Render Breadcrumbs ───────────────────────────────── */
-function renderBreadcrumbs(containerId, crumbs) {
+function renderBreadcrumbs(containerId, items) {
   const container = document.getElementById(containerId);
-  if (!container || !Array.isArray(crumbs)) return;
+  if (!container) return;
 
-  container.innerHTML = crumbs.map((crumb, i) => {
-    if (i === crumbs.length - 1) {
-      return `<span>${sanitizeHTML(crumb.label)}</span>`;
+  container.innerHTML = items.map((item, idx) => {
+    const isLast = idx === items.length - 1;
+    const safeLabel = sanitizeHTML(item.label);
+    if (isLast) {
+      return `<span class="breadcrumbs__current">${safeLabel}</span>`;
     }
-    return `<a href="${encodeURI(crumb.href)}">${sanitizeHTML(crumb.label)}</a><span class="breadcrumbs__sep">›</span>`;
+    return `
+      <a href="${item.href}" class="breadcrumbs__link">${safeLabel}</a>
+      <span class="breadcrumbs__separator">/</span>
+    `;
   }).join('');
 }
 
-/* ── Render Pagination (Debounced & Fast) ──────────────── */
+/* ── Render Pagination ────────────────────────────────── */
 function renderPagination(containerId, currentPage, totalPages, onPageChange) {
   const container = document.getElementById(containerId);
   if (!container || totalPages <= 1) {
@@ -160,8 +153,7 @@ function renderPagination(containerId, currentPage, totalPages, onPageChange) {
     return;
   }
 
-  let html = '';
-  html += `<button class="pagination__btn" data-page="${currentPage - 1}" ${currentPage <= 1 ? 'disabled' : ''} aria-label="Previous Page">‹</button>`;
+  let html = `<button class="pagination__btn" data-page="${currentPage - 1}" ${currentPage <= 1 ? 'disabled' : ''} aria-label="Previous Page">‹</button>`;
 
   for (let i = 1; i <= totalPages; i++) {
     if (totalPages > 7) {
