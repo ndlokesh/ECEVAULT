@@ -6,6 +6,10 @@
   <title>ECEvault — Unlock the Vault of ECE Knowledge</title>
   <meta name="description" content="The ultimate, premium, scroll-animated knowledge repository for Electronics & Communication Engineering students. Notes, question papers, lab manuals, and syllabus guides." />
   <link rel="canonical" href="https://ndlokesh.github.io/ECEVAULT/" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="alternate icon" href="favicon.ico" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
 
   <!-- Google Fonts: Outfit (Headings), Plus Jakarta Sans (Body), Quicksand (Secondary) -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -732,7 +736,7 @@
             header.classList.remove('shadow-md');
           }
         }
-      });
+      }, { passive: true });
 
       if (backToTopBtn) {
         backToTopBtn.addEventListener('click', () => {
@@ -817,7 +821,7 @@
           window.requestAnimationFrame(updateParallax);
           ticking = true;
         }
-      });
+      }, { passive: true });
 
       // 5. Mobile Menu Toggle
       const menuBtn = document.getElementById('mobileMenuBtn');
