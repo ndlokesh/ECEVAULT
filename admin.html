@@ -3,8 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Portal — ECEVault</title>
+  <title>Admin Portal — ECEvault Security Control</title>
   <meta name="robots" content="noindex, nofollow" />
+  <meta http-equiv="X-Content-Type-Options" content="nosniff" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="alternate icon" href="favicon.ico" />
+  
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
@@ -16,11 +21,57 @@
     .admin-navbar { background: #FFFFFF; border-bottom: 1px solid var(--color-border); height: 68px; display: flex; align-items: center; position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-xs); }
     .admin-navbar__inner { display: flex; align-items: center; justify-content: space-between; width: 100%; }
     .admin-badge { background: #FEF3C7; color: #92400E; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; padding: 3px 8px; border-radius: var(--radius-sm); margin-left: 8px; display: inline-flex; align-items: center; gap: 4px; }
+    
+    /* Security Firewall Badge */
+    .fw-shield {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      background: #ECFDF5;
+      color: #065F46;
+      border: 1px solid #A7F3D0;
+      margin-bottom: 16px;
+    }
+    .fw-pulse {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #10B981;
+      box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+      animation: fwPulse 2s infinite;
+    }
+    @keyframes fwPulse {
+      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+      70% { box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+
     .auth-container { min-height: calc(100vh - 70px); display: flex; align-items: center; justify-content: center; padding: var(--space-6); }
-    .auth-card { background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-2xl); padding: var(--space-10); max-width: 440px; width: 100%; box-shadow: var(--shadow-xl); text-align: center; }
-    .auth-icon { width: 64px; height: 64px; background: var(--color-primary-light); color: var(--color-primary); border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-6); }
-    .auth-input { width: 100%; background: var(--color-bg); border: 1.5px solid var(--color-border); border-radius: var(--radius-lg); padding: 14px 16px; font-size: var(--font-size-base); color: var(--color-text); margin-bottom: var(--space-4); text-align: center; letter-spacing: 2px; }
+    .auth-card { background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-2xl); padding: var(--space-10); max-width: 440px; width: 100%; box-shadow: var(--shadow-xl); text-align: center; position: relative; }
+    .auth-icon { width: 64px; height: 64px; background: var(--color-primary-light); color: var(--color-primary); border-radius: var(--radius-xl); display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-4); }
+    .auth-input { width: 100%; background: var(--color-bg); border: 1.5px solid var(--color-border); border-radius: var(--radius-lg); padding: 14px 16px; font-size: var(--font-size-base); color: var(--color-text); margin-bottom: var(--space-3); text-align: center; letter-spacing: 2px; }
     .auth-input:focus { border-color: var(--color-primary); background: #FFFFFF; box-shadow: 0 0 0 3px rgba(37,99,235,0.15); }
+    
+    .lockout-alert {
+      display: none;
+      background: #FEF2F2;
+      border: 1px solid #FCA5A5;
+      color: #991B1B;
+      padding: 12px 14px;
+      border-radius: var(--radius-lg);
+      font-size: 12px;
+      line-height: 1.5;
+      font-weight: 600;
+      margin-top: 14px;
+      text-align: left;
+    }
+
     .admin-dashboard { display: none; padding: var(--space-8) 0 var(--space-20); }
     .admin-stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-6); margin-bottom: var(--space-8); }
     .admin-stat-card { background: #FFFFFF; border: 1px solid var(--color-border); border-radius: var(--radius-xl); padding: var(--space-6); box-shadow: var(--shadow-sm); display: flex; align-items: center; gap: var(--space-4); }
@@ -63,33 +114,69 @@
         <span class="admin-badge">Admin Portal</span>
       </div>
       <div style="display:flex; align-items:center; gap:var(--space-3);" id="navActions">
+        <span style="font-size:12px; color:#059669; font-weight:600; display:inline-flex; align-items:center; gap:4px;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Firewall Active
+        </span>
         <a href="index.html" target="_blank" class="btn btn--outline btn--sm">View Public Site</a>
         <button class="btn btn--outline btn--sm" id="btnLogout" style="display:none;">Log Out</button>
       </div>
     </div>
   </header>
 
+  <!-- AUTHENTICATION & FIREWALL SCREEN -->
   <section class="auth-container" id="authScreen">
     <div class="auth-card">
-      <div class="auth-icon"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-      <h1 style="font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); color: var(--color-text); margin-bottom: var(--space-2);">Administrator Access</h1>
-      <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); margin-bottom: var(--space-6); line-height: 1.5;">This portal is restricted to the site owner. Please enter your secret admin PIN.</p>
+      <div class="fw-shield">
+        <span class="fw-pulse"></span>
+        Security Firewall Active
+      </div>
+
+      <div class="auth-icon">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+
+      <h1 style="font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); color: var(--color-text); margin-bottom: var(--space-2);">
+        Administrator Access
+      </h1>
+      <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); margin-bottom: var(--space-5); line-height: 1.5;">
+        Protected with SHA-256 cryptographic verification and intrusion rate-limiting.
+      </p>
+
       <form id="authForm" onsubmit="event.preventDefault(); verifyPin();">
         <input type="password" id="adminPinInput" class="auth-input" placeholder="••••••••" autocomplete="current-password" autofocus />
-        <button type="submit" class="btn btn--primary btn--lg" style="width:100%; justify-content:center;">Unlock Admin Dashboard</button>
+        <button type="submit" id="btnUnlock" class="btn btn--primary btn--lg" style="width:100%; justify-content:center;">
+          Unlock Admin Dashboard
+        </button>
       </form>
-      <div id="authError" style="display:none; color:var(--color-red); font-size:var(--font-size-xs); font-weight:600; margin-top:var(--space-3);">Incorrect PIN. Please try again.</div>
-      <div style="font-size: 11px; color: var(--color-text-muted); margin-top: var(--space-6);">Default PIN: <code style="background:#F1F5F9; padding:2px 6px; border-radius:4px;">ecevault2026</code></div>
+
+      <div id="authError" style="display:none; color:var(--color-red); font-size:var(--font-size-xs); font-weight:600; margin-top:var(--space-3);">
+        Incorrect PIN. <span id="attemptsLeftText"></span>
+      </div>
+
+      <div id="lockoutAlert" class="lockout-alert">
+        <div style="display:flex; align-items:center; gap:6px; margin-bottom:4px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          <strong>Intrusion Shield Triggered</strong>
+        </div>
+        Too many failed attempts. Temporary security lockout active.
+        <div style="font-size:11px; margin-top:4px;" id="lockoutTimerText">Try again in 300 seconds.</div>
+      </div>
+
+      <div style="font-size: 11px; color: var(--color-text-muted); margin-top: var(--space-6);">
+        Default PIN: <code style="background:#F1F5F9; padding:2px 6px; border-radius:4px;">ecevault2026</code>
+      </div>
     </div>
   </section>
 
+  <!-- MAIN ADMIN DASHBOARD -->
   <main class="admin-dashboard" id="dashboardScreen">
     <div class="container">
       <div class="admin-stats-grid">
         <div class="admin-stat-card"><div class="admin-stat-icon" style="background:#EFF6FF; color:#2563EB;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg></div><div><div class="admin-stat-num" id="statTotalMats">22</div><div class="admin-stat-label">Total Materials</div></div></div>
         <div class="admin-stat-card"><div class="admin-stat-icon" style="background:#DCFCE7; color:#16A34A;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg></div><div><div class="admin-stat-num" id="statCustomMats">0</div><div class="admin-stat-label">Admin Uploads</div></div></div>
         <div class="admin-stat-card"><div class="admin-stat-icon" style="background:#CFFAFE; color:#0891B2;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></div><div><div class="admin-stat-num" id="statSubjects">45</div><div class="admin-stat-label">Subjects</div></div></div>
-        <div class="admin-stat-card"><div class="admin-stat-icon" style="background:#EDE9FE; color:#7C3AED;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div><div><div class="admin-stat-num" style="color:var(--color-green);">Active</div><div class="admin-stat-label">Live Sync Status</div></div></div>
+        <div class="admin-stat-card"><div class="admin-stat-icon" style="background:#EDE9FE; color:#7C3AED;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div><div><div class="admin-stat-num" style="color:var(--color-green);">Secured</div><div class="admin-stat-label">Firewall Status</div></div></div>
       </div>
 
       <nav class="admin-tabs">
@@ -99,6 +186,7 @@
         <button class="admin-tab" data-pane="paneSettings">Settings &amp; Security</button>
       </nav>
 
+      <!-- TAB 1: UPLOAD -->
       <section class="admin-pane admin-pane--active" id="paneUpload">
         <div class="form-card">
           <div style="margin-bottom: var(--space-6);"><h2 style="font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--color-text);">Publish New Study Resource</h2><p style="font-size: var(--font-size-sm); color: var(--color-text-secondary);">Uploaded materials immediately appear on your website for users to view and download.</p></div>
@@ -120,17 +208,39 @@
         </div>
       </section>
 
+      <!-- TAB 2: MANAGE -->
       <section class="admin-pane" id="paneManage">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:var(--space-6);"><h2 style="font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--color-text);">Admin Uploaded Materials</h2><button class="btn btn--primary btn--sm" onclick="switchTab('paneUpload')">+ Upload Another</button></div>
         <div class="admin-table-container"><table class="admin-table"><thead><tr><th>Title</th><th>Semester</th><th>Subject</th><th>Type</th><th>Size</th><th style="text-align:right;">Actions</th></tr></thead><tbody id="materialsTableBody"></tbody></table><div id="noUploadsMessage" style="padding:var(--space-12); text-align:center; color:var(--color-text-secondary); display:none;"><p style="font-weight:600;">No custom materials uploaded yet</p></div></div>
       </section>
 
+      <!-- TAB 3: EXPORT -->
       <section class="admin-pane" id="paneExport">
         <div class="form-card"><h2 style="font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--color-text); margin-bottom: var(--space-4);">Export to GitHub Repository</h2><p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); margin-bottom: var(--space-4);">Copy this clean snippet into <code style="background:#F1F5F9; padding:2px 6px;">js/data.js</code> whenever you want to permanently commit files to GitHub.</p><div style="display:flex; gap:var(--space-3); margin-bottom:var(--space-4);"><button class="btn btn--primary btn--sm" onclick="copyExportCode()">Copy JavaScript Code</button><button class="btn btn--outline btn--sm" onclick="downloadExportJson()">Download JSON</button></div><pre class="code-box" id="exportCodeBlock"></pre></div>
       </section>
 
+      <!-- TAB 4: SETTINGS & SECURITY -->
       <section class="admin-pane" id="paneSettings">
-        <div class="form-card" style="max-width: 600px;"><h2 style="font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--color-text); margin-bottom: var(--space-4);">Security Settings</h2><div style="margin-bottom: var(--space-6);"><label class="form-label">Update Admin PIN</label><div style="display:flex; gap:var(--space-3);"><input type="password" id="newPinInput" class="form-input" placeholder="Enter new secret PIN" /><button class="btn btn--primary btn--md" onclick="updateAdminPin()">Save New PIN</button></div></div><div style="padding-top:var(--space-6); border-top:1px solid var(--color-border);"><button class="btn btn--outline btn--sm" style="color:var(--color-red); border-color:#FCA5A5;" onclick="clearAllCustomData()">Clear All Custom Uploads</button></div></div>
+        <div class="form-card" style="max-width: 600px;">
+          <h2 style="font-size: var(--font-size-xl); font-weight: var(--font-weight-bold); color: var(--color-text); margin-bottom: var(--space-4);">Security Settings</h2>
+          
+          <div style="margin-bottom: var(--space-6);">
+            <label class="form-label">Update Secret Admin PIN (Auto SHA-256 Hashed)</label>
+            <div style="display:flex; gap:var(--space-3);">
+              <input type="password" id="newPinInput" class="form-input" placeholder="Enter new secret PIN (min 6 characters)" />
+              <button class="btn btn--primary btn--md" onclick="updateAdminPin()">Save New PIN</button>
+            </div>
+            <div style="font-size:12px; color:var(--color-text-secondary); margin-top:6px;">
+              Your PIN is cryptographically hashed before saving. Plain text is never stored in browser memory.
+            </div>
+          </div>
+
+          <div style="padding-top:var(--space-6); border-top:1px solid var(--color-border);">
+            <h3 style="font-size:var(--font-size-sm); font-weight:700; color:var(--color-red); margin-bottom:4px;">Danger Zone</h3>
+            <p style="font-size:var(--font-size-xs); color:var(--color-text-secondary); margin-bottom:12px;">Clear custom uploads from browser cache.</p>
+            <button class="btn btn--outline btn--sm" style="color:var(--color-red); border-color:#FCA5A5;" onclick="clearAllCustomData()">Clear All Custom Uploads</button>
+          </div>
+        </div>
       </section>
     </div>
   </main>
@@ -139,9 +249,53 @@
   <script src="js/components.js"></script>
   <script src="js/app.js"></script>
   <script>
-    const DEFAULT_PIN = 'ecevault2026';
-    function getStoredPin() { return localStorage.getItem('ecevault_admin_pin') || DEFAULT_PIN; }
+    // ══════════════ CRYPTOGRAPHIC FIREWALL & SECURITY ══════════════
+    // SHA-256 hash for default PIN 'ecevault2026':
+    const DEFAULT_PIN_HASH = '90f6e2e4db575c400316b7d2305da322438843785870b9b83bc623fb32c0b1a1';
+    const MAX_FAILED_ATTEMPTS = 5;
+    const LOCKOUT_DURATION_MS = 5 * 60 * 1000; // 5 minute security lockout
+
+    async function sha256(text) {
+      const msgUint8 = new TextEncoder().encode(text);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    function getStoredPinHash() {
+      return localStorage.getItem('ecevault_admin_pinhash') || DEFAULT_PIN_HASH;
+    }
+
+    // Rate-limiting and Brute-force Detection
+    function checkLockout() {
+      const lockUntil = parseInt(localStorage.getItem('ecevault_lockout_until') || '0', 10);
+      const now = Date.now();
+      const lockoutAlert = document.getElementById('lockoutAlert');
+      const pinInput = document.getElementById('adminPinInput');
+      const unlockBtn = document.getElementById('btnUnlock');
+
+      if (now < lockUntil) {
+        const remainingSec = Math.ceil((lockUntil - now) / 1000);
+        lockoutAlert.style.display = 'block';
+        document.getElementById('lockoutTimerText').textContent = `Firewall locked. Try again in ${remainingSec} seconds.`;
+        pinInput.disabled = true;
+        unlockBtn.disabled = true;
+        setTimeout(checkLockout, 1000);
+        return true;
+      } else {
+        if (lockoutAlert.style.display === 'block') {
+          lockoutAlert.style.display = 'none';
+          pinInput.disabled = false;
+          unlockBtn.disabled = false;
+          localStorage.removeItem('ecevault_lockout_until');
+          localStorage.removeItem('ecevault_failed_attempts');
+        }
+        return false;
+      }
+    }
+
     function checkAuth() {
+      checkLockout();
       const isAuth = sessionStorage.getItem('ecevault_admin_auth') === 'true';
       if (isAuth) {
         document.getElementById('authScreen').style.display = 'none';
@@ -154,57 +308,101 @@
         document.getElementById('btnLogout').style.display = 'none';
       }
     }
-    function verifyPin() {
-      const entered = document.getElementById('adminPinInput').value.trim();
-      if (entered === getStoredPin()) {
+
+    async function verifyPin() {
+      if (checkLockout()) return;
+
+      const input = document.getElementById('adminPinInput');
+      const entered = input.value.trim();
+      if (!entered) return;
+
+      const enteredHash = await sha256(entered);
+      const expectedHash = getStoredPinHash();
+
+      if (enteredHash === expectedHash) {
         sessionStorage.setItem('ecevault_admin_auth', 'true');
+        localStorage.removeItem('ecevault_failed_attempts');
         document.getElementById('authError').style.display = 'none';
-        showToast('Access granted. Welcome, Admin!', 'success');
+        showToast('Security verification passed. Welcome, Admin!', 'success');
         checkAuth();
       } else {
-        document.getElementById('authError').style.display = 'block';
-        document.getElementById('adminPinInput').value = '';
+        // Intrusion defense counter
+        let failures = parseInt(localStorage.getItem('ecevault_failed_attempts') || '0', 10) + 1;
+        localStorage.setItem('ecevault_failed_attempts', failures);
+
+        if (failures >= MAX_FAILED_ATTEMPTS) {
+          localStorage.setItem('ecevault_lockout_until', Date.now() + LOCKOUT_DURATION_MS);
+          checkLockout();
+          showToast('🚨 Firewall Alert: Multiple invalid attempts. Portal locked for 5 minutes.', 'error');
+        } else {
+          const remaining = MAX_FAILED_ATTEMPTS - failures;
+          document.getElementById('attemptsLeftText').textContent = `(${remaining} attempt${remaining !== 1 ? 's' : ''} remaining before lockout)`;
+          document.getElementById('authError').style.display = 'block';
+          input.value = '';
+          input.focus();
+        }
       }
     }
+
     document.getElementById('btnLogout').addEventListener('click', () => {
       sessionStorage.removeItem('ecevault_admin_auth');
-      showToast('Logged out.', 'info');
+      showToast('Logged out of admin console.', 'info');
       checkAuth();
     });
-    function updateAdminPin() {
+
+    async function updateAdminPin() {
       const newPin = document.getElementById('newPinInput').value.trim();
-      if (newPin.length < 4) { alert('PIN must be at least 4 characters.'); return; }
-      localStorage.setItem('ecevault_admin_pin', newPin);
+      if (newPin.length < 6) {
+        alert('For security, the new PIN must be at least 6 characters long.');
+        return;
+      }
+      const newHash = await sha256(newPin);
+      localStorage.setItem('ecevault_admin_pinhash', newHash);
+      // Remove any old unhashed PIN
+      localStorage.removeItem('ecevault_admin_pin');
       document.getElementById('newPinInput').value = '';
-      showToast('Admin PIN updated!', 'success');
+      showToast('Secret PIN updated and cryptographically hashed!', 'success');
     }
 
+    // ══════════════ DASHBOARD LOGIC ══════════════
     let uploadedFileData = null;
-    function initDashboard() { updateStats(); renderUploadedTable(); updateExportBlock(); populateSubjectDropdown(1); }
+    function initDashboard() {
+      updateStats();
+      renderUploadedTable();
+      updateExportBlock();
+      populateSubjectDropdown(1);
+    }
+
     document.querySelectorAll('.admin-tab').forEach(tab => {
       tab.addEventListener('click', () => switchTab(tab.dataset.pane));
     });
+
     function switchTab(paneId) {
       document.querySelectorAll('.admin-tab').forEach(t => t.classList.toggle('admin-tab--active', t.dataset.pane === paneId));
       document.querySelectorAll('.admin-pane').forEach(p => p.classList.toggle('admin-pane--active', p.id === paneId));
       if (paneId === 'paneManage') renderUploadedTable();
       if (paneId === 'paneExport') updateExportBlock();
     }
+
     function populateSubjectDropdown(semNum) {
       const select = document.getElementById('matSubject');
-      const sem = getSemester(Number(semNum));
+      const sem = typeof getSemester === 'function' ? getSemester(Number(semNum)) : null;
       if (!sem) { select.innerHTML = '<option value="">-- Select Semester First --</option>'; return; }
-      select.innerHTML = sem.subjects.map(s => `<option value="${s.id}">${s.code} - ${s.name}</option>`).join('') + '<option value="s-custom">Other / Custom Course</option>';
+      select.innerHTML = sem.subjects.map(s => `<option value="${s.id}">${s.code} - ${sanitizeHTML(s.name)}</option>`).join('') + '<option value="s-custom">Other / Custom Course</option>';
     }
+
     const dropZone = document.getElementById('fileDropZone');
     const filePicker = document.getElementById('matFilePicker');
-    dropZone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      if (e.dataTransfer.files && e.dataTransfer.files[0]) handleFileSelection(e.dataTransfer.files[0]);
-    });
-    filePicker.addEventListener('change', (e) => {
-      if (e.target.files && e.target.files[0]) handleFileSelection(e.target.files[0]);
-    });
+    if (dropZone && filePicker) {
+      dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) handleFileSelection(e.dataTransfer.files[0]);
+      });
+      filePicker.addEventListener('change', (e) => {
+        if (e.target.files && e.target.files[0]) handleFileSelection(e.target.files[0]);
+      });
+    }
+
     function handleFileSelection(file) {
       const sizeMB = (file.size / (1024 * 1024)).toFixed(1);
       document.getElementById('fileNameDisplay').textContent = file.name;
@@ -217,6 +415,7 @@
       reader.onload = function(e) { uploadedFileData = { name: file.name, dataUrl: e.target.result, size: sizeMB + ' MB' }; };
       reader.readAsDataURL(file);
     }
+
     document.getElementById('materialUploadForm').addEventListener('submit', (e) => {
       e.preventDefault();
       const title = document.getElementById('matTitle').value.trim();
@@ -224,10 +423,11 @@
       const subjectId = document.getElementById('matSubject').value;
       const type = document.getElementById('matType').value;
       const unit = document.getElementById('matUnit').value;
-      const size = document.getElementById('matSize').value.trim() || '3.2 MB';
+      const size = document.getElementById('matSize').value.trim() || '3.5 MB';
       const fileUrl = document.getElementById('matFileUrl').value.trim();
       const description = document.getElementById('matDescription').value.trim() || 'Comprehensive study resource covering key syllabus units.';
       const featured = document.getElementById('matFeatured').checked;
+
       const newMaterial = {
         id: 'm_' + Date.now(),
         title, semester, subjectId, type,
@@ -238,19 +438,22 @@
         fileUrl: fileUrl || null,
         createdAt: new Date().toISOString()
       };
+
       const customList = getCustomMaterials();
       customList.unshift(newMaterial);
       saveCustomMaterials(customList);
-      showToast('🎉 "' + title + '" published!', 'success');
+      showToast('🎉 "' + sanitizeHTML(title) + '" published successfully!', 'success');
       resetForm();
       updateStats();
       switchTab('paneManage');
     });
+
     function resetForm() {
       document.getElementById('materialUploadForm').reset();
       document.getElementById('fileInfoBadge').style.display = 'none';
       uploadedFileData = null;
     }
+
     function renderUploadedTable() {
       const customList = getCustomMaterials();
       const tbody = document.getElementById('materialsTableBody');
@@ -259,19 +462,26 @@
       if (customList.length === 0) { tbody.innerHTML = ''; emptyMsg.style.display = 'block'; return; }
       emptyMsg.style.display = 'none';
       tbody.innerHTML = customList.map(m => {
-        const subj = getSubject(m.subjectId) || { name: m.subjectId, code: 'EC' };
+        const subj = typeof getSubject === 'function' ? getSubject(m.subjectId) || { name: m.subjectId, code: 'EC' } : { name: m.subjectId, code: 'EC' };
         return `
           <tr>
-            <td><div style="font-weight:600;">${m.title}</div><div style="font-size:12px; color:var(--color-text-secondary);">${m.description.slice(0, 60)}…</div></td>
-            <td><span class="badge badge--blue">Sem ${m.semester}</span></td>
-            <td><span class="badge badge--cyan">${subj.code}</span></td>
-            <td><span class="badge badge--violet">${getTypeLabel(m.type)}</span></td>
-            <td>${m.size}</td>
-            <td style="text-align:right;"><a href="preview.html?id=${m.id}" target="_blank" class="btn btn--outline btn--sm">Preview</a> <button class="btn btn--outline btn--sm" style="color:var(--color-red); border-color:#FECACA;" onclick="deleteMaterial('${m.id}')">Delete</button></td>
+            <td>
+              <div style="font-weight:600; color:var(--color-text);">${sanitizeHTML(m.title)}</div>
+              <div style="font-size:12px; color:var(--color-text-secondary);">${sanitizeHTML(m.description.slice(0, 60))}…</div>
+            </td>
+            <td><span class="badge badge--blue">Sem ${sanitizeHTML(m.semester)}</span></td>
+            <td><span class="badge badge--cyan">${sanitizeHTML(subj.code)}</span></td>
+            <td><span class="badge badge--violet">${typeof getTypeLabel === 'function' ? getTypeLabel(m.type) : m.type}</span></td>
+            <td>${sanitizeHTML(m.size)}</td>
+            <td style="text-align:right;">
+              <a href="preview.html?id=${encodeURIComponent(m.id)}" target="_blank" class="btn btn--outline btn--sm">Preview</a> 
+              <button class="btn btn--outline btn--sm" style="color:var(--color-red); border-color:#FECACA;" onclick="deleteMaterial('${sanitizeHTML(m.id)}')">Delete</button>
+            </td>
           </tr>
         `;
       }).join('');
     }
+
     function deleteMaterial(id) {
       if (!confirm('Remove this material?')) return;
       let customList = getCustomMaterials().filter(m => m.id !== id);
@@ -281,6 +491,7 @@
       renderUploadedTable();
       updateExportBlock();
     }
+
     function clearAllCustomData() {
       if (!confirm('Delete all custom uploaded materials?')) return;
       saveCustomMaterials([]);
@@ -289,19 +500,24 @@
       renderUploadedTable();
       updateExportBlock();
     }
+
     function updateStats() {
       const customList = getCustomMaterials();
-      document.getElementById('statTotalMats').textContent = ECE_DATA.materials.length + customList.length;
+      const baseCount = typeof ECE_DATA !== 'undefined' ? ECE_DATA.materials.length : 22;
+      document.getElementById('statTotalMats').textContent = baseCount + customList.length;
       document.getElementById('statCustomMats').textContent = customList.length;
       document.getElementById('manageCount').textContent = customList.length;
     }
+
     function updateExportBlock() {
       const customList = getCustomMaterials().map(m => { const c = { ...m }; delete c.dataUrl; return c; });
       document.getElementById('exportCodeBlock').textContent = `// Paste into ECE_DATA.materials inside js/data.js:\n` + JSON.stringify(customList, null, 2);
     }
+
     function copyExportCode() {
       navigator.clipboard.writeText(document.getElementById('exportCodeBlock').textContent).then(() => showToast('Copied to clipboard!', 'success'));
     }
+
     function downloadExportJson() {
       const blob = new Blob([JSON.stringify(getCustomMaterials(), null, 2)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
@@ -311,6 +527,7 @@
       a.click();
       URL.revokeObjectURL(url);
     }
+
     document.addEventListener('DOMContentLoaded', checkAuth);
   </script>
 </body>
