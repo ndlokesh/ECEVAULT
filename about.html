@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us — ECEVault</title>
+  <meta name="description" content="Learn about ECEVault — a free, open-access academic repository dedicated to Electronics & Communication Engineering students." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/design-tokens.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <style>
+    .about-hero {
+      background: linear-gradient(180deg, #EFF6FF 0%, var(--color-bg) 100%);
+      padding: var(--space-16) 0 var(--space-12);
+      text-align: center;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .about-hero__title {
+      font-size: var(--font-size-4xl);
+      font-weight: var(--font-weight-extrabold);
+      color: var(--color-text);
+      margin-bottom: var(--space-4);
+    }
+    .about-hero__sub {
+      font-size: var(--font-size-lg);
+      color: var(--color-text-secondary);
+      max-width: 680px;
+      margin: 0 auto;
+      line-height: var(--line-height-relaxed);
+    }
+    .about-values-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-6);
+      margin: var(--space-12) 0;
+    }
+    .about-value-card {
+      background: var(--color-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8);
+      box-shadow: var(--shadow-sm);
+      transition: all var(--transition-base);
+    }
+    .about-value-card:hover {
+      box-shadow: var(--shadow-lg);
+      border-color: var(--color-primary-light);
+      transform: translateY(-2px);
+    }
+    .about-value-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: var(--radius-lg);
+      background: var(--color-primary-light);
+      color: var(--color-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: var(--space-4);
+    }
+    .faq-list {
+      display: grid;
+      gap: var(--space-4);
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .faq-item {
+      background: var(--color-card);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5) var(--space-6);
+      box-shadow: var(--shadow-xs);
+    }
+    .faq-question {
+      font-size: var(--font-size-base);
+      font-weight: var(--font-weight-semibold);
+      color: var(--color-text);
+      margin-bottom: var(--space-2);
+    }
+    .faq-answer {
+      font-size: var(--font-size-sm);
+      color: var(--color-text-secondary);
+      line-height: var(--line-height-relaxed);
+    }
+    .contact-card {
+      background: #FFFFFF;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-2xl);
+      padding: var(--space-10);
+      text-align: center;
+      max-width: 700px;
+      margin: var(--space-16) auto 0;
+      box-shadow: var(--shadow-md);
+    }
+    @media (max-width: 768px) {
+      .about-values-grid { grid-template-columns: 1fr; }
+      .about-hero__title { font-size: var(--font-size-3xl); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════ NAVBAR ═══════════════ -->
+  <nav class="navbar" id="navbar">
+    <div class="container navbar__inner">
+      <a href="index.html" class="navbar__brand">
+        <svg class="navbar__logo-icon" viewBox="0 0 32 32" width="32" height="32" fill="none">
+          <rect width="32" height="32" rx="8" fill="#2563EB"/>
+          <path d="M8 10h16M8 16h12M8 22h14" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+        </svg>
+        <span class="navbar__logo-text">ECE<span class="navbar__logo-accent">Vault</span></span>
+      </a>
+
+      <div class="navbar__search" id="navbarSearch">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#64748B" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="globalSearch" class="navbar__search-input" placeholder="Search materials, subjects…" autocomplete="off" />
+      </div>
+
+      <ul class="navbar__links" id="navLinks">
+        <li><a href="index.html" class="navbar__link">Home</a></li>
+        <li><a href="materials.html" class="navbar__link">Study Materials</a></li>
+        <li><a href="papers.html" class="navbar__link">Question Papers</a></li>
+        <li><a href="lab-manuals.html" class="navbar__link">Lab Manuals</a></li>
+        <li><a href="syllabus.html" class="navbar__link">Syllabus</a></li>
+        <li><a href="about.html" class="navbar__link navbar__link--active">About</a></li>
+      </ul>
+
+      <button class="navbar__hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ═══════════════ HERO ═══════════════ -->
+  <header class="about-hero">
+    <div class="container">
+      <nav class="breadcrumbs" id="breadcrumbs" style="justify-content: center; margin-bottom: var(--space-4);"></nav>
+      <span class="badge badge--blue" style="margin-bottom: var(--space-3);">Open Educational Resource</span>
+      <h1 class="about-hero__title">Empowering Every ECE Student</h1>
+      <p class="about-hero__sub">
+        ECEVault is an open, student-driven academic portal built to democratize access to engineering education. We assemble verified lecture notes, university previous papers, laboratory manuals, and syllabus guides into one organized, intuitive repository.
+      </p>
+    </div>
+  </header>
+
+  <!-- ═══════════════ MAIN CONTENT ═══════════════ -->
+  <main class="page-content">
+    <div class="container">
+      <!-- Core Pillars -->
+      <div class="section__header">
+        <span class="section__badge">💡 Why ECEVault</span>
+        <h2 class="section__title">Our Guiding Principles</h2>
+        <p class="section__subtitle">Designed specifically to eliminate academic barriers for undergraduate engineering students.</p>
+      </div>
+
+      <div class="about-values-grid">
+        <div class="about-value-card">
+          <div class="about-value-icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3 style="font-size: var(--font-size-lg); font-weight: var(--font-weight-bold); color: var(--color-text); margin-bottom: var(--space-2);">100% Free &amp; Open</h3>
+          <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: var(--line-height-relaxed);">
+            No registration, paywalls, or gated forms. Every document is immediately readable and downloadable with a single click.
+          </p>
+        </div>
+
+        <div class="about-value-card">
+          <div class="about-value-icon" style="background: var(--color-cyan-light); color: var(--color-cyan);">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+          </div>
+          <h3 style="font-size: var(--font-size-lg); font-weight: var(--font-weight-bold); color: var(--color-text); margin-bottom: var(--space-2);">Semester-Wise Clarity</h3>
+          <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: var(--line-height-relaxed);">
+            Curated across Semester 1 through Semester 8 according to accredited university curriculum standards and verified course codes.
+          </p>
+        </div>
+
+        <div class="about-value-card">
+          <div class="about-value-icon" style="background: var(--color-green-light); color: var(--color-green);">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <h3 style="font-size: var(--font-size-lg); font-weight: var(--font-weight-bold); color: var(--color-text); margin-bottom: var(--space-2);">Quality Verified</h3>
+          <p style="font-size: var(--font-size-sm); color: var(--color-text-secondary); line-height: var(--line-height-relaxed);">
+            All uploaded materials undergo review to ensure high typographical legibility, accurate diagrams, and aligned unit syllabi.
+          </p>
+        </div>
+      </div>
+
+      <!-- FAQ Section -->
+      <section style="margin-top: var(--space-16);">
+        <div class="section__header">
+          <span class="section__badge">❓ Frequently Asked Questions</span>
+          <h2 class="section__title">Got Questions?</h2>
+          <p class="section__subtitle">Here are the most common questions from students and contributors.</p>
+        </div>
+
+        <div class="faq-list">
+          <div class="faq-item">
+            <h4 class="faq-question">Do I need to sign up or create an account to view or download materials?</h4>
+            <p class="faq-answer">No. ECEVault is completely free and public. You never need to register, log in, or provide any personal details.</p>
+          </div>
+          <div class="faq-item">
+            <h4 class="faq-question">Can I preview PDFs directly in the browser?</h4>
+            <p class="faq-answer">Yes! Click the "Preview" button on any material card to open our lightweight document viewer equipped with page controls, zoom, and print functions.</p>
+          </div>
+          <div class="faq-item">
+            <h4 class="faq-question">Are the materials matched to standard university syllabi?</h4>
+            <p class="faq-answer">Yes, our subject categorizations, course codes, and unit outlines mirror standard AICTE and state university curricula for Electronics and Communication Engineering.</p>
+          </div>
+          <div class="faq-item">
+            <h4 class="faq-question">How can I contribute study materials or report an error?</h4>
+            <p class="faq-answer">You can contact our volunteer editorial team via the contact form or email below. We welcome handwritten notes, exam solutions, and lab records!</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact / Feedback Card -->
+      <div class="contact-card" id="contact">
+        <span class="badge badge--blue" style="margin-bottom: var(--space-3);">Get In Touch</span>
+        <h3 style="font-size: var(--font-size-2xl); font-weight: var(--font-weight-bold); color: var(--color-text); margin-bottom: var(--space-3);">Have Notes or Questions to Share?</h3>
+        <p style="font-size: var(--font-size-base); color: var(--color-text-secondary); line-height: var(--line-height-relaxed); margin-bottom: var(--space-6); max-width: 500px; margin-left: auto; margin-right: auto;">
+          Whether you want to suggest notes, submit previous question papers, or report an issue, we'd love to hear from you.
+        </p>
+        <div style="display:flex; justify-content:center; gap:var(--space-4); flex-wrap: wrap;">
+          <a href="mailto:support@ecevault.edu" class="btn btn--primary btn--md">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            Email Support Team
+          </a>
+          <a href="materials.html" class="btn btn--outline btn--md">
+            Browse All Materials
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ═══════════════ FOOTER ═══════════════ -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__brand">
+          <a href="index.html" class="navbar__brand">
+            <svg class="navbar__logo-icon" viewBox="0 0 32 32" width="28" height="28" fill="none">
+              <rect width="32" height="32" rx="8" fill="#2563EB"/>
+              <path d="M8 10h16M8 16h12M8 22h14" stroke="#fff" stroke-width="2.2" stroke-linecap="round"/>
+            </svg>
+            <span class="navbar__logo-text">ECE<span class="navbar__logo-accent">Vault</span></span>
+          </a>
+          <p class="footer__tagline">Your one-stop destination for ECE study resources. Free, open, and built for students.</p>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__heading">Quick Links</h4>
+          <ul class="footer__list">
+            <li><a href="materials.html">Study Materials</a></li>
+            <li><a href="papers.html">Question Papers</a></li>
+            <li><a href="lab-manuals.html">Lab Manuals</a></li>
+            <li><a href="syllabus.html">Syllabus</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__heading">Semesters</h4>
+          <ul class="footer__list">
+            <li><a href="semester.html?sem=1">Semester 1</a></li>
+            <li><a href="semester.html?sem=2">Semester 2</a></li>
+            <li><a href="semester.html?sem=3">Semester 3</a></li>
+            <li><a href="semester.html?sem=4">Semester 4</a></li>
+            <li><a href="semester.html?sem=5">Semester 5</a></li>
+            <li><a href="semester.html?sem=6">Semester 6</a></li>
+            <li><a href="semester.html?sem=7">Semester 7</a></li>
+            <li><a href="semester.html?sem=8">Semester 8</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__heading">About</h4>
+          <ul class="footer__list">
+            <li><a href="about.html">About ECEVault</a></li>
+            <li><a href="about.html#contact">Contact Us</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>&copy; 2026 ECEVault. Made with ❤️ for ECE students everywhere.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/data.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      renderBreadcrumbs('breadcrumbs', [
+        { label: 'Home', href: 'index.html' },
+        { label: 'About ECEVault', href: 'about.html' }
+      ]);
+    });
+  </script>
+</body>
+</html>

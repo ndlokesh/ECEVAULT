@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Document Preview — ECEVault</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/design-tokens.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <style>
+    body { background-color: #F1F5F9; min-height: 100vh; display: flex; flex-direction: column; }
+    .preview-navbar { background: #FFFFFF; border-bottom: 1px solid var(--color-border); padding: var(--space-3) var(--space-6); display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); position: sticky; top: 0; z-index: 100; box-shadow: var(--shadow-xs); }
+    .preview-navbar__left { display: flex; align-items: center; gap: var(--space-4); min-width: 0; }
+    .preview-doc-title { font-size: var(--font-size-base); font-weight: var(--font-weight-semibold); color: var(--color-text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 400px; }
+    .preview-doc-meta { font-size: var(--font-size-xs); color: var(--color-text-secondary); display: flex; gap: var(--space-2); align-items: center; }
+    .preview-toolbar { display: flex; align-items: center; gap: var(--space-2); background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: 4px var(--space-2); }
+    .preview-tool-btn { width: 34px; height: 34px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; color: var(--color-text-secondary); background: transparent; cursor: pointer; transition: all var(--transition-fast); }
+    .preview-tool-btn:hover { background: #FFFFFF; color: var(--color-primary); box-shadow: var(--shadow-xs); }
+    .preview-layout { flex: 1; display: flex; overflow: hidden; height: calc(100vh - 65px); }
+    .preview-stage { flex: 1; overflow-y: auto; padding: var(--space-8); display: flex; flex-direction: column; align-items: center; background: #E2E8F0; }
+    .doc-page { background: #FFFFFF; width: 100%; max-width: 820px; min-height: 800px; border: 1px solid #CBD5E1; border-radius: 4px; padding: 50px 60px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); margin-bottom: var(--space-8); }
+    .doc-page__header { border-bottom: 2px solid #2563EB; padding-bottom: var(--space-4); margin-bottom: var(--space-6); display: flex; justify-content: space-between; align-items: flex-end; }
+    .doc-page__univ { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; color: #2563EB; }
+    .doc-page__title { font-size: 22px; font-weight: 800; color: #0F172A; margin-top: 4px; }
+  </style>
+</head>
+<body>
+  <header class="preview-navbar">
+    <div class="preview-navbar__left">
+      <a href="materials.html" class="btn btn--outline btn--sm">Back</a>
+      <div class="preview-doc-info">
+        <h1 class="preview-doc-title" id="docTitle">Document Preview</h1>
+        <div class="preview-doc-meta" id="docMeta"><span>PDF Document</span> • <span>Verified</span></div>
+      </div>
+    </div>
+    <div class="preview-actions">
+      <button class="btn btn--outline btn--sm" onclick="window.print()">Print</button>
+      <button class="btn btn--primary btn--sm" id="btnDownloadDoc">Download PDF</button>
+    </div>
+  </header>
+  <div class="preview-layout">
+    <main class="preview-stage" id="stage">
+      <div class="doc-page" id="docCanvas">
+        <div class="doc-page__header">
+          <div>
+            <div class="doc-page__univ">Department of Electronics &amp; Communication Engineering</div>
+            <h2 class="doc-page__title" id="canvasTitle">Lecture Notes &amp; Study Guide</h2>
+          </div>
+        </div>
+        <div style="background:#EFF6FF; border-left:4px solid #2563EB; padding:12px 16px; border-radius:0 6px 6px 0; margin-bottom:24px;">
+          <div style="font-weight:700; color:#1E3A8A;">Chapter 1: Principles and Analytical Modeling</div>
+          <div style="font-size:13px; color:#475569;">Verified Course Material &bull; ECE Academic Portal</div>
+        </div>
+        <p style="font-size:14px; line-height:1.7; color:#334155; margin-bottom:14px;">
+          This study document provides detailed, semester-aligned references covering theoretical derivations, circuit topologies, frequency response characteristics, and university solved benchmark problems.
+        </p>
+      </div>
+    </main>
+  </div>
+  <script src="js/data.js"></script>
+  <script src="js/components.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlId = getUrlParam('id') || 'm001';
+      const material = ECE_DATA.materials.find(m => m.id === urlId) || ECE_DATA.materials[0];
+      const subj = getSubject(material.subjectId) || { name: 'ECE', code: 'EC' };
+      document.title = `${material.title} (Preview) — ECEVault`;
+      document.getElementById('docTitle').textContent = material.title;
+      document.getElementById('canvasTitle').textContent = material.title;
+      document.getElementById('docMeta').innerHTML = `<span class="badge badge--blue">Sem ${material.semester}</span> <span class="badge badge--cyan">${subj.name}</span> <span>${material.size}</span>`;
+      document.getElementById('btnDownloadDoc').addEventListener('click', () => handleDownload(material.id));
+    });
+  </script>
+</body>
+</html>
