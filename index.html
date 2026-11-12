@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ECEvault — Unlock the Vault of ECE Knowledge</title>
-  <meta name="description" content="The ultimate, premium, secure knowledge repository for Electronics & Communication Engineering students. Notes, question papers, lab manuals, and syllabus guides." />
+  <meta name="description" content="The ultimate, premium, scroll-animated knowledge repository for Electronics & Communication Engineering students. Notes, question papers, lab manuals, and syllabus guides." />
   <link rel="canonical" href="https://ndlokesh.github.io/ECEVAULT/" />
 
   <!-- Google Fonts: Outfit (Headings), Plus Jakarta Sans (Body), Quicksand (Secondary) -->
@@ -45,7 +45,7 @@
             'glow-blue': '0 10px 30px -5px rgba(37, 99, 235, 0.35)',
             'glow-amber': '0 10px 30px -5px rgba(245, 158, 11, 0.4)',
             'card-soft': '0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.03)',
-            'card-hover': '0 20px 35px -5px rgba(37, 99, 235, 0.12), 0 10px 15px -5px rgba(0, 0, 0, 0.04)'
+            'card-hover': '0 20px 35px -5px rgba(37, 99, 235, 0.14), 0 10px 15px -5px rgba(0, 0, 0, 0.04)'
           }
         }
       }
@@ -64,41 +64,58 @@
       font-family: 'Outfit', sans-serif;
     }
 
-    .reveal {
+    /* ══════════ SCROLL REVEAL ANIMATIONS ══════════ */
+    .scroll-reveal {
       opacity: 0;
-      filter: blur(6px);
-      transform: translateY(24px) scale(0.96);
-      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-                  filter 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-                  transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      filter: blur(8px);
+      transform: translateY(32px) scale(0.96);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                  filter 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
       will-change: opacity, filter, transform;
     }
-    .reveal.active {
+    .scroll-reveal.visible {
       opacity: 1;
       filter: blur(0px);
       transform: translateY(0) scale(1);
     }
 
-    .reveal-left {
+    /* Directional reveals */
+    .scroll-left {
       opacity: 0;
-      transform: translateX(-40px) scale(0.95);
-      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      filter: blur(6px);
+      transform: translateX(-48px) scale(0.95);
+      transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .reveal-left.active {
+    .scroll-left.visible {
       opacity: 1;
+      filter: blur(0px);
       transform: translateX(0) scale(1);
     }
 
-    .reveal-right {
+    .scroll-right {
       opacity: 0;
-      transform: translateX(40px) scale(0.95);
-      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      filter: blur(6px);
+      transform: translateX(48px) scale(0.95);
+      transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .reveal-right.active {
+    .scroll-right.visible {
       opacity: 1;
+      filter: blur(0px);
       transform: translateX(0) scale(1);
     }
 
+    .scroll-zoom {
+      opacity: 0;
+      transform: scale(0.85);
+      transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .scroll-zoom.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* Stagger Delays */
     .delay-1 { transition-delay: 0.05s; }
     .delay-2 { transition-delay: 0.1s; }
     .delay-3 { transition-delay: 0.15s; }
@@ -106,55 +123,77 @@
     .delay-5 { transition-delay: 0.25s; }
     .delay-6 { transition-delay: 0.3s; }
 
+    /* Parallax Floating Ambient Bubbles */
     .parallax-bubble {
       position: absolute;
       border-radius: 9999px;
       pointer-events: none;
-      filter: blur(40px);
-      opacity: 0.55;
+      filter: blur(60px);
+      opacity: 0.45;
       z-index: 0;
-      transition: transform 0.2s ease-out;
+      transition: transform 0.15s ease-out;
     }
 
+    /* Icon 360 Spin on Hover */
     .rotate-hover {
-      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
     .group:hover .rotate-hover {
-      transform: rotate(360deg) scale(1.1);
+      transform: rotate(360deg) scale(1.15);
     }
 
-    @keyframes heroSlideDown {
-      0% { opacity: 0; transform: translateY(-30px); }
+    /* Mouse Scroll Wheel Indicator */
+    @keyframes mouseScroll {
+      0% { opacity: 1; transform: translateY(0); }
+      50% { opacity: 0.3; transform: translateY(8px); }
       100% { opacity: 1; transform: translateY(0); }
     }
-    .hero-entrance {
-      animation: heroSlideDown 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    .mouse-wheel {
+      animation: mouseScroll 1.6s infinite ease-in-out;
     }
 
-    @keyframes goldPulse {
-      0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
-      50% { box-shadow: 0 0 0 10px rgba(245, 158, 11, 0); }
+    /* Amber Pulse */
+    @keyframes amberPulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.45); }
+      50% { box-shadow: 0 0 0 12px rgba(245, 158, 11, 0); }
     }
     .pulse-amber {
-      animation: goldPulse 2.5s infinite;
+      animation: amberPulse 2.5s infinite;
+    }
+
+    /* Floating Circuit Graphic */
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-10px) rotate(1deg); }
+    }
+    .floating-card {
+      animation: floatSlow 6s ease-in-out infinite;
     }
   </style>
 </head>
 <body class="bg-brand-bg text-brand-slate antialiased selection:bg-brand-primary selection:text-white">
 
-  <!-- PARALLAX BACKGROUND BUBBLES -->
+  <!-- ══════════ TOP SCROLL PROGRESS BAR ══════════ -->
+  <div id="scrollProgressBar" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-brand-primary via-brand-cyan to-brand-amber z-[100] transition-all duration-75 w-0"></div>
+
+  <!-- ══════════ PARALLAX AMBIENT GLOW BUBBLES ══════════ -->
   <div class="fixed inset-0 overflow-hidden pointer-events-none -z-10">
-    <div class="parallax-bubble bg-gradient-to-tr from-blue-300 to-indigo-400 w-96 h-96 -top-20 -left-20" data-speed="2"></div>
-    <div class="parallax-bubble bg-gradient-to-tr from-sky-200 to-cyan-300 w-[500px] h-[500px] top-[40%] -right-32" data-speed="-1.5"></div>
-    <div class="parallax-bubble bg-gradient-to-tr from-amber-200 to-yellow-300 w-80 h-80 bottom-10 left-1/4" data-speed="1.2"></div>
+    <div class="parallax-bubble bg-gradient-to-tr from-blue-300 to-indigo-400 w-[450px] h-[450px] -top-24 -left-20" data-speed="1.8"></div>
+    <div class="parallax-bubble bg-gradient-to-tr from-sky-200 to-cyan-300 w-[550px] h-[550px] top-[35%] -right-40" data-speed="-1.4"></div>
+    <div class="parallax-bubble bg-gradient-to-tr from-amber-200 to-yellow-300 w-96 h-96 top-[70%] left-10" data-speed="1.1"></div>
   </div>
 
-  <!-- STICKY NAVBAR -->
-  <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200/80 transition-all duration-300" id="mainHeader">
+  <!-- ══════════ FLOATING BACK TO TOP BUTTON ══════════ -->
+  <button id="backToTopBtn" aria-label="Back to Top" class="fixed bottom-8 right-8 z-50 p-3.5 rounded-full bg-white/90 backdrop-blur-md text-brand-primary border border-slate-200 shadow-xl opacity-0 translate-y-6 pointer-events-none transition-all duration-300 hover:bg-brand-primary hover:text-white hover:scale-110 active:scale-95 group">
+    <iconify-icon icon="lucide:arrow-up" width="22" height="22" class="group-hover:-translate-y-0.5 transition-transform"></iconify-icon>
+  </button>
+
+  <!-- ══════════ STICKY NAVBAR ══════════ -->
+  <header class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200/80 transition-all duration-300" id="mainHeader">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex items-center justify-between h-20">
+      <div class="flex items-center justify-between h-20 transition-all" id="navbarInner">
         
-        <!-- Brand Logo -->
+        <!-- Logo -->
         <a href="index.html" class="flex items-center gap-3 group focus:outline-none">
           <div class="w-11 h-11 rounded-2xl bg-gradient-to-br from-brand-primary via-blue-600 to-brand-deep flex items-center justify-center text-white shadow-glow-blue transition-transform duration-300 group-hover:scale-105">
             <iconify-icon icon="lucide:vault" width="24" height="24" class="rotate-hover"></iconify-icon>
@@ -208,7 +247,7 @@
       </div>
     </div>
 
-    <!-- Mobile Dropdown Menu -->
+    <!-- Mobile Menu Drawer -->
     <div id="mobileMenu" class="hidden lg:hidden bg-white/95 backdrop-blur-lg border-b border-slate-200 px-6 py-6 transition-all">
       <div class="mb-4">
         <input 
@@ -235,15 +274,15 @@
     </div>
   </header>
 
-  <!-- HERO SECTION -->
-  <section class="relative pt-12 pb-24 md:pt-20 md:pb-32 overflow-hidden">
+  <!-- ══════════ HERO SECTION (WITH SCROLL CUE) ══════════ -->
+  <section class="relative pt-12 pb-16 md:pt-20 md:pb-24 overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
       
-      <div class="text-center max-w-3xl mx-auto hero-entrance">
+      <div class="text-center max-w-3xl mx-auto">
         
-        <!-- Tagline Pill -->
-        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200/80 shadow-sm mb-6 group cursor-pointer hover:border-brand-primary transition-colors">
-          <span class="w-2 h-2 rounded-full bg-brand-amber pulse-amber"></span>
+        <!-- Animated Unlock Badge -->
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200/80 shadow-sm mb-6 group cursor-pointer hover:border-brand-primary transition-colors scroll-reveal visible">
+          <span class="w-2.5 h-2.5 rounded-full bg-brand-amber pulse-amber"></span>
           <span class="text-xs sm:text-sm font-semibold text-brand-deep tracking-wide font-quicksand">
             Unlock the Vault of ECE Knowledge
           </span>
@@ -251,17 +290,17 @@
         </div>
 
         <!-- Headline -->
-        <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.1] mb-6">
+        <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.1] mb-6 scroll-reveal delay-1 visible">
           The Ultimate Knowledge Repository for <span class="bg-gradient-to-r from-brand-primary via-sky-500 to-brand-deep bg-clip-text text-transparent">ECE Students</span>
         </h1>
 
         <!-- Subtitle -->
-        <p class="text-base sm:text-lg md:text-xl text-brand-gray leading-relaxed mb-10 max-w-2xl mx-auto font-normal">
+        <p class="text-base sm:text-lg md:text-xl text-brand-gray leading-relaxed mb-10 max-w-2xl mx-auto font-normal scroll-reveal delay-2 visible">
           Semester-wise handwritten notes, university question papers with solutions, lab experiment manuals, and comprehensive curriculum guides — completely free and curated for high academic performance.
         </p>
 
-        <!-- CTA Action Buttons -->
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
+        <!-- CTA Buttons -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-14 scroll-reveal delay-3 visible">
           <a href="materials.html" class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 bg-gradient-to-r from-brand-primary to-brand-deep hover:from-blue-600 hover:to-indigo-700 text-white font-semibold text-base px-8 py-4 rounded-full shadow-glow-blue hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
             <iconify-icon icon="lucide:book-open" width="20" height="20" class="text-brand-cyan"></iconify-icon>
             <span>Explore Study Materials</span>
@@ -272,41 +311,63 @@
           </a>
         </div>
 
-        <!-- Trust Indicators Bar -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 pt-8 border-t border-slate-200/80 reveal">
-          <div class="p-4 rounded-2xl bg-white/70 backdrop-blur-sm border border-slate-200/60 shadow-sm">
-            <div class="text-2xl sm:text-3xl font-extrabold text-brand-primary font-heading">15k+</div>
-            <div class="text-xs sm:text-sm font-medium text-brand-gray mt-0.5">ECE Members</div>
-          </div>
-          <div class="p-4 rounded-2xl bg-white/70 backdrop-blur-sm border border-slate-200/60 shadow-sm">
-            <div class="text-2xl sm:text-3xl font-extrabold text-brand-cyan font-heading">8</div>
-            <div class="text-xs sm:text-sm font-medium text-brand-gray mt-0.5">Full Semesters</div>
-          </div>
-          <div class="p-4 rounded-2xl bg-white/70 backdrop-blur-sm border border-slate-200/60 shadow-sm">
-            <div class="text-2xl sm:text-3xl font-extrabold text-brand-deep font-heading">60+</div>
-            <div class="text-xs sm:text-sm font-medium text-brand-gray mt-0.5">Core Subjects</div>
-          </div>
-          <div class="p-4 rounded-2xl bg-white/70 backdrop-blur-sm border border-slate-200/60 shadow-sm">
-            <div class="text-2xl sm:text-3xl font-extrabold text-brand-amber font-heading">100%</div>
-            <div class="text-xs sm:text-sm font-medium text-brand-gray mt-0.5">Free Access</div>
-          </div>
+        <!-- ══════════ ANIMATED SCROLL DOWN CUE ══════════ -->
+        <div class="flex justify-center scroll-reveal delay-4 visible">
+          <a href="#metricsSection" class="inline-flex flex-col items-center gap-2.5 text-slate-400 hover:text-brand-primary transition-colors group cursor-pointer">
+            <span class="text-xs font-bold uppercase tracking-widest text-slate-400 group-hover:text-brand-primary transition-colors font-quicksand">
+              Scroll Down to Explore Vault
+            </span>
+            <div class="w-6 h-10 rounded-full border-2 border-slate-300 group-hover:border-brand-primary flex items-start justify-center p-1.5 transition-colors shadow-xs">
+              <div class="w-1.5 h-2.5 bg-brand-primary rounded-full mouse-wheel"></div>
+            </div>
+            <iconify-icon icon="lucide:chevron-down" class="text-slate-400 group-hover:text-brand-primary animate-bounce"></iconify-icon>
+          </a>
         </div>
 
       </div>
     </div>
   </section>
 
-  <!-- CORE VALUE FEATURES -->
-  <section class="py-20 bg-white border-y border-slate-200/80 relative">
+  <!-- ══════════ SCROLL-TRIGGERED STATS COUNTER ══════════ -->
+  <section class="py-12 bg-white/80 backdrop-blur-md border-y border-slate-200/80" id="metricsSection">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+        
+        <div class="scroll-reveal delay-1 p-6 rounded-2xl bg-slate-50 border border-slate-200/70 hover:border-brand-primary/40 transition-all duration-300 hover:-translate-y-1">
+          <div class="text-3xl sm:text-4xl font-extrabold text-brand-primary font-heading counter" data-target="15000" data-suffix="+">0</div>
+          <div class="text-xs sm:text-sm font-semibold text-brand-gray mt-1 uppercase tracking-wider font-quicksand">Active ECE Students</div>
+        </div>
+
+        <div class="scroll-reveal delay-2 p-6 rounded-2xl bg-slate-50 border border-slate-200/70 hover:border-brand-cyan/40 transition-all duration-300 hover:-translate-y-1">
+          <div class="text-3xl sm:text-4xl font-extrabold text-brand-cyan font-heading counter" data-target="8" data-suffix=" Semesters">0</div>
+          <div class="text-xs sm:text-sm font-semibold text-brand-gray mt-1 uppercase tracking-wider font-quicksand">Comprehensive Syllabus</div>
+        </div>
+
+        <div class="scroll-reveal delay-3 p-6 rounded-2xl bg-slate-50 border border-slate-200/70 hover:border-brand-deep/40 transition-all duration-300 hover:-translate-y-1">
+          <div class="text-3xl sm:text-4xl font-extrabold text-brand-deep font-heading counter" data-target="60" data-suffix="+">0</div>
+          <div class="text-xs sm:text-sm font-semibold text-brand-gray mt-1 uppercase tracking-wider font-quicksand">Subjects &amp; Labs</div>
+        </div>
+
+        <div class="scroll-reveal delay-4 p-6 rounded-2xl bg-slate-50 border border-slate-200/70 hover:border-brand-amber/40 transition-all duration-300 hover:-translate-y-1">
+          <div class="text-3xl sm:text-4xl font-extrabold text-brand-amber font-heading counter" data-target="100" data-suffix="%">0</div>
+          <div class="text-xs sm:text-sm font-semibold text-brand-gray mt-1 uppercase tracking-wider font-quicksand">Free &amp; Open Access</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ VAULT FEATURES (SCROLL REVEAL LEFT/RIGHT) ══════════ -->
+  <section class="py-24 bg-white relative" id="featuresSection">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
-      <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+      <div class="text-center max-w-2xl mx-auto mb-16 scroll-reveal">
         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-blue-100 text-brand-deep font-quicksand">
           <iconify-icon icon="lucide:shield-check"></iconify-icon>
           Premium Academic Architecture
         </span>
         <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mt-3 tracking-tight">
-          Everything You Need to Excel in ECE
+          Everything You Need to Ace Your Degree
         </h2>
         <p class="text-brand-gray text-base mt-3">
           Constructed specifically for Electronics &amp; Communication Engineering students with zero fluff, no paywalls, and verified accuracy.
@@ -315,7 +376,8 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         
-        <div class="reveal reveal-left delay-1 group p-8 rounded-3xl bg-brand-bg border border-slate-200 hover:border-brand-primary/40 hover:bg-white transition-all duration-300 shadow-card-soft hover:shadow-card-hover">
+        <!-- Feature 1 -->
+        <div class="scroll-left delay-1 group p-8 rounded-3xl bg-brand-bg border border-slate-200 hover:border-brand-primary/40 hover:bg-white transition-all duration-300 shadow-card-soft hover:shadow-card-hover hover:-translate-y-1.5">
           <div class="w-14 h-14 rounded-2xl bg-blue-100 text-brand-primary flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 group-hover:bg-brand-primary group-hover:text-white transition-all duration-300">
             <iconify-icon icon="lucide:book-marked" width="28" height="28" class="rotate-hover"></iconify-icon>
           </div>
@@ -325,11 +387,12 @@
           </p>
           <a href="materials.html?type=notes" class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-primary hover:text-brand-deep">
             <span>Explore Notes</span>
-            <iconify-icon icon="lucide:arrow-right" class="group-hover:translate-x-1 transition-transform"></iconify-icon>
+            <iconify-icon icon="lucide:arrow-right" class="group-hover:translate-x-1.5 transition-transform"></iconify-icon>
           </a>
         </div>
 
-        <div class="reveal delay-2 group p-8 rounded-3xl bg-brand-bg border border-slate-200 hover:border-brand-cyan/50 hover:bg-white transition-all duration-300 shadow-card-soft hover:shadow-card-hover">
+        <!-- Feature 2 -->
+        <div class="scroll-reveal delay-2 group p-8 rounded-3xl bg-brand-bg border border-slate-200 hover:border-brand-cyan/50 hover:bg-white transition-all duration-300 shadow-card-soft hover:shadow-card-hover hover:-translate-y-1.5">
           <div class="w-14 h-14 rounded-2xl bg-cyan-100 text-brand-cyan flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 group-hover:bg-brand-cyan group-hover:text-white transition-all duration-300">
             <iconify-icon icon="lucide:file-check-2" width="28" height="28" class="rotate-hover"></iconify-icon>
           </div>
@@ -339,11 +402,12 @@
           </p>
           <a href="papers.html" class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-cyan hover:text-cyan-700">
             <span>Browse Exam Papers</span>
-            <iconify-icon icon="lucide:arrow-right" class="group-hover:translate-x-1 transition-transform"></iconify-icon>
+            <iconify-icon icon="lucide:arrow-right" class="group-hover:translate-x-1.5 transition-transform"></iconify-icon>
           </a>
         </div>
 
-        <div class="reveal reveal-right delay-3 group p-8 rounded-3xl bg-brand-bg border border-slate-200 hover:border-indigo-400/50 hover:bg-white transition-all duration-300 shadow-card-soft hover:shadow-card-hover">
+        <!-- Feature 3 -->
+        <div class="scroll-right delay-3 group p-8 rounded-3xl bg-brand-bg border border-slate-200 hover:border-indigo-400/50 hover:bg-white transition-all duration-300 shadow-card-soft hover:shadow-card-hover hover:-translate-y-1.5">
           <div class="w-14 h-14 rounded-2xl bg-indigo-100 text-indigo-600 flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
             <iconify-icon icon="lucide:flask-conical" width="28" height="28" class="rotate-hover"></iconify-icon>
           </div>
@@ -353,11 +417,12 @@
           </p>
           <a href="lab-manuals.html" class="inline-flex items-center gap-1.5 text-sm font-semibold text-indigo-600 hover:text-indigo-800">
             <span>View Lab Records</span>
-            <iconify-icon icon="lucide:arrow-right" class="group-hover:translate-x-1 transition-transform"></iconify-icon>
+            <iconify-icon icon="lucide:arrow-right" class="group-hover:translate-x-1.5 transition-transform"></iconify-icon>
           </a>
         </div>
 
-        <div class="reveal reveal-left delay-4 group p-8 rounded-3xl bg-brand-bg border border-slate-200 hover:border-amber-400/50 hover:bg-white transition-all duration-300 shadow-card-soft hover:shadow-card-hover">
+        <!-- Feature 4 -->
+        <div class="scroll-left delay-4 group p-8 rounded-3xl bg-brand-bg border border-slate-200 hover:border-amber-400/50 hover:bg-white transition-all duration-300 shadow-card-soft hover:shadow-card-hover hover:-translate-y-1.5">
           <div class="w-14 h-14 rounded-2xl bg-amber-100 text-brand-amber flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 group-hover:bg-brand-amber group-hover:text-white transition-all duration-300">
             <iconify-icon icon="lucide:clipboard-list" width="28" height="28" class="rotate-hover"></iconify-icon>
           </div>
@@ -367,11 +432,12 @@
           </p>
           <a href="syllabus.html" class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-amber hover:text-amber-700">
             <span>Inspect Syllabus</span>
-            <iconify-icon icon="lucide:arrow-right" class="group-hover:translate-x-1 transition-transform"></iconify-icon>
+            <iconify-icon icon="lucide:arrow-right" class="group-hover:translate-x-1.5 transition-transform"></iconify-icon>
           </a>
         </div>
 
-        <div class="reveal delay-5 group p-8 rounded-3xl bg-brand-bg border border-slate-200 hover:border-brand-primary/40 hover:bg-white transition-all duration-300 shadow-card-soft hover:shadow-card-hover">
+        <!-- Feature 5 -->
+        <div class="scroll-reveal delay-5 group p-8 rounded-3xl bg-brand-bg border border-slate-200 hover:border-brand-primary/40 hover:bg-white transition-all duration-300 shadow-card-soft hover:shadow-card-hover hover:-translate-y-1.5">
           <div class="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300">
             <iconify-icon icon="lucide:eye" width="28" height="28" class="rotate-hover"></iconify-icon>
           </div>
@@ -381,11 +447,12 @@
           </p>
           <a href="preview.html" class="inline-flex items-center gap-1.5 text-sm font-semibold text-emerald-600 hover:text-emerald-800">
             <span>Test Document Viewer</span>
-            <iconify-icon icon="lucide:arrow-right" class="group-hover:translate-x-1 transition-transform"></iconify-icon>
+            <iconify-icon icon="lucide:arrow-right" class="group-hover:translate-x-1.5 transition-transform"></iconify-icon>
           </a>
         </div>
 
-        <div class="reveal reveal-right delay-6 group p-8 rounded-3xl bg-brand-bg border border-slate-200 hover:border-brand-deep/40 hover:bg-white transition-all duration-300 shadow-card-soft hover:shadow-card-hover">
+        <!-- Feature 6 -->
+        <div class="scroll-right delay-6 group p-8 rounded-3xl bg-brand-bg border border-slate-200 hover:border-brand-deep/40 hover:bg-white transition-all duration-300 shadow-card-soft hover:shadow-card-hover hover:-translate-y-1.5">
           <div class="w-14 h-14 rounded-2xl bg-sky-100 text-brand-sky flex items-center justify-center mb-6 shadow-sm group-hover:scale-110 group-hover:bg-brand-sky group-hover:text-white transition-all duration-300">
             <iconify-icon icon="lucide:lock-open" width="28" height="28" class="rotate-hover"></iconify-icon>
           </div>
@@ -395,7 +462,7 @@
           </p>
           <a href="about.html" class="inline-flex items-center gap-1.5 text-sm font-semibold text-brand-sky hover:text-sky-700">
             <span>Read Our Mission</span>
-            <iconify-icon icon="lucide:arrow-right" class="group-hover:translate-x-1 transition-transform"></iconify-icon>
+            <iconify-icon icon="lucide:arrow-right" class="group-hover:translate-x-1.5 transition-transform"></iconify-icon>
           </a>
         </div>
 
@@ -404,11 +471,11 @@
     </div>
   </section>
 
-  <!-- CHOOSE YOUR SEMESTER SECTION -->
+  <!-- ══════════ CHOOSE YOUR SEMESTER SECTION ══════════ -->
   <section class="py-24 relative" id="semestersSection">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
-      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 reveal">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 scroll-reveal">
         <div>
           <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-amber-100 text-amber-800 font-quicksand">
             <iconify-icon icon="lucide:layers"></iconify-icon>
@@ -429,17 +496,19 @@
         </div>
       </div>
 
+      <!-- Semester Cards Grid (Rendered Dynamically via JS) -->
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="semesterGrid">
+        <!-- Rendered by JS -->
       </div>
 
     </div>
   </section>
 
-  <!-- POPULAR STUDY MATERIALS -->
+  <!-- ══════════ POPULAR / FEATURED STUDY MATERIALS ══════════ -->
   <section class="py-24 bg-white border-t border-slate-200/80 relative" id="popularSection">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
-      <div class="text-center max-w-2xl mx-auto mb-16 reveal">
+      <div class="text-center max-w-2xl mx-auto mb-16 scroll-reveal">
         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-blue-100 text-brand-primary font-quicksand">
           <iconify-icon icon="lucide:star" class="text-brand-amber"></iconify-icon>
           Top Rated Resources
@@ -452,11 +521,13 @@
         </p>
       </div>
 
+      <!-- Materials Grid (Rendered by JS) -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="featuredGrid">
+        <!-- Rendered by JS -->
       </div>
 
-      <div class="text-center mt-12 reveal">
-        <a href="materials.html" class="inline-flex items-center gap-2 bg-slate-900 hover:bg-brand-primary text-white font-semibold text-sm px-8 py-3.5 rounded-full shadow-md hover:shadow-glow-blue transition-all duration-300">
+      <div class="text-center mt-12 scroll-reveal">
+        <a href="materials.html" class="inline-flex items-center gap-2 bg-slate-900 hover:bg-brand-primary text-white font-semibold text-sm px-8 py-3.5 rounded-full shadow-md hover:shadow-glow-blue transition-all duration-300 hover:scale-105">
           <span>Browse All 500+ Study Materials</span>
           <iconify-icon icon="lucide:arrow-right"></iconify-icon>
         </a>
@@ -465,48 +536,51 @@
     </div>
   </section>
 
-  <!-- 3-STEP FLOW -->
-  <section class="py-20 bg-slate-50 border-t border-slate-200/80">
+  <!-- ══════════ HOW TO UNLOCK / 3-STEP ROADMAP ══════════ -->
+  <section class="py-24 bg-slate-50 border-t border-slate-200/80 relative overflow-hidden">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
-      <div class="text-center max-w-2xl mx-auto mb-16 reveal">
-        <h2 class="text-3xl font-extrabold text-slate-900 tracking-tight">
+      <div class="text-center max-w-2xl mx-auto mb-16 scroll-reveal">
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
           How to Unlock ECEvault
         </h2>
         <p class="text-brand-gray text-base mt-2">
-          Find, preview, and download your course materials in seconds.
+          Find, preview, and download your verified course materials in seconds.
         </p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8 relative">
         
-        <div class="reveal delay-1 bg-white p-8 rounded-3xl border border-slate-200 shadow-sm text-center relative">
-          <div class="w-12 h-12 rounded-full bg-brand-primary/10 text-brand-primary font-heading font-extrabold text-lg flex items-center justify-center mx-auto mb-6">
-            1
+        <!-- Step 1 -->
+        <div class="scroll-reveal delay-1 bg-white p-8 rounded-3xl border border-slate-200 shadow-sm text-center relative hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1">
+          <div class="w-14 h-14 rounded-2xl bg-brand-primary/10 text-brand-primary font-heading font-extrabold text-xl flex items-center justify-center mx-auto mb-6 shadow-xs">
+            01
           </div>
           <h3 class="text-lg font-bold text-slate-900 mb-2">Pick Your Semester</h3>
-          <p class="text-sm text-brand-gray">
-            Choose from Semester 1 through Semester 8 to filter your department’s exact syllabus.
+          <p class="text-sm text-brand-gray leading-relaxed">
+            Choose from Semester 1 through Semester 8 to view the exact subjects and units in your curriculum.
           </p>
         </div>
 
-        <div class="reveal delay-2 bg-white p-8 rounded-3xl border border-slate-200 shadow-sm text-center relative">
-          <div class="w-12 h-12 rounded-full bg-brand-cyan/10 text-brand-cyan font-heading font-extrabold text-lg flex items-center justify-center mx-auto mb-6">
-            2
+        <!-- Step 2 -->
+        <div class="scroll-reveal delay-2 bg-white p-8 rounded-3xl border border-slate-200 shadow-sm text-center relative hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1">
+          <div class="w-14 h-14 rounded-2xl bg-brand-cyan/10 text-brand-cyan font-heading font-extrabold text-xl flex items-center justify-center mx-auto mb-6 shadow-xs">
+            02
           </div>
-          <h3 class="text-lg font-bold text-slate-900 mb-2">Select Subject &amp; Unit</h3>
-          <p class="text-sm text-brand-gray">
+          <h3 class="text-lg font-bold text-slate-900 mb-2">Filter Category &amp; Unit</h3>
+          <p class="text-sm text-brand-gray leading-relaxed">
             Filter by Lecture Notes, Solved Question Papers, or Lab Manuals for specific units.
           </p>
         </div>
 
-        <div class="reveal delay-3 bg-white p-8 rounded-3xl border border-slate-200 shadow-sm text-center relative">
-          <div class="w-12 h-12 rounded-full bg-brand-amber/15 text-brand-amber font-heading font-extrabold text-lg flex items-center justify-center mx-auto mb-6">
-            3
+        <!-- Step 3 -->
+        <div class="scroll-reveal delay-3 bg-white p-8 rounded-3xl border border-slate-200 shadow-sm text-center relative hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1">
+          <div class="w-14 h-14 rounded-2xl bg-brand-amber/15 text-brand-amber font-heading font-extrabold text-xl flex items-center justify-center mx-auto mb-6 shadow-xs">
+            03
           </div>
           <h3 class="text-lg font-bold text-slate-900 mb-2">Preview &amp; Download</h3>
-          <p class="text-sm text-brand-gray">
-            Preview the document in high-res inside your browser or download the full PDF offline.
+          <p class="text-sm text-brand-gray leading-relaxed">
+            Preview the document in our light-theme in-browser viewer or download the complete PDF file offline.
           </p>
         </div>
 
@@ -515,12 +589,12 @@
     </div>
   </section>
 
-  <!-- FINAL CTA -->
-  <section class="py-20 relative overflow-hidden bg-gradient-to-br from-brand-deep via-brand-primary to-blue-700 text-white">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 reveal">
+  <!-- ══════════ FINAL HIGH-IMPACT VAULT UNLOCK CTA ══════════ -->
+  <section class="py-24 relative overflow-hidden bg-gradient-to-br from-brand-deep via-brand-primary to-blue-700 text-white">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10 scroll-zoom">
       
-      <div class="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center mx-auto mb-6 text-brand-amber">
-        <iconify-icon icon="lucide:vault" width="34" height="34"></iconify-icon>
+      <div class="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center mx-auto mb-6 text-brand-amber shadow-glow-amber">
+        <iconify-icon icon="lucide:vault" width="34" height="34" class="rotate-hover"></iconify-icon>
       </div>
 
       <h2 class="text-3xl sm:text-5xl font-extrabold tracking-tight mb-4">
@@ -531,11 +605,11 @@
       </p>
 
       <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-        <a href="materials.html" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-brand-amber hover:bg-amber-400 text-slate-900 font-bold px-8 py-4 rounded-full shadow-glow-amber transition-all duration-300 hover:scale-105">
+        <a href="materials.html" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-brand-amber hover:bg-amber-400 text-slate-900 font-bold px-8 py-4 rounded-full shadow-glow-amber transition-all duration-300 hover:scale-105 active:scale-95">
           <iconify-icon icon="lucide:unlock" width="18" height="18"></iconify-icon>
           <span>Unlock Knowledge Vault</span>
         </a>
-        <a href="syllabus.html" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 border border-white/30 text-white font-semibold px-8 py-4 rounded-full transition-all">
+        <a href="syllabus.html" class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 border border-white/30 text-white font-semibold px-8 py-4 rounded-full transition-all hover:scale-105 active:scale-95">
           <span>Check ECE Syllabus</span>
         </a>
       </div>
@@ -543,7 +617,7 @@
     </div>
   </section>
 
-  <!-- FOOTER -->
+  <!-- ══════════ FOOTER ══════════ -->
   <footer class="bg-white border-t border-slate-200 py-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       
@@ -611,41 +685,141 @@
     </div>
   </footer>
 
+  <!-- ══════════ DATA & COMPONENT SCRIPTS ══════════ -->
   <script src="js/data.js"></script>
   <script src="js/components.js"></script>
   <script src="js/app.js"></script>
 
+  <!-- ══════════ ADVANCED SCROLL-DOWN ANIMATION ENGINE ══════════ -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+      
+      // 1. Scroll Progress Bar & Back to Top Toggle
+      const progressBar = document.getElementById('scrollProgressBar');
+      const backToTopBtn = document.getElementById('backToTopBtn');
+      const header = document.getElementById('mainHeader');
+      const navbarInner = document.getElementById('navbarInner');
 
+      window.addEventListener('scroll', () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrollPercent = (scrollTop / docHeight) * 100;
+        
+        if (progressBar) {
+          progressBar.style.width = scrollPercent + '%';
+        }
+
+        // Back to top appearance
+        if (backToTopBtn) {
+          if (scrollTop > 350) {
+            backToTopBtn.classList.remove('opacity-0', 'translate-y-6', 'pointer-events-none');
+            backToTopBtn.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
+          } else {
+            backToTopBtn.classList.add('opacity-0', 'translate-y-6', 'pointer-events-none');
+            backToTopBtn.classList.remove('opacity-100', 'translate-y-0', 'pointer-events-auto');
+          }
+        }
+
+        // Navbar shrink on scroll
+        if (header && navbarInner) {
+          if (scrollTop > 40) {
+            navbarInner.classList.remove('h-20');
+            navbarInner.classList.add('h-16');
+            header.classList.add('shadow-md');
+          } else {
+            navbarInner.classList.add('h-20');
+            navbarInner.classList.remove('h-16');
+            header.classList.remove('shadow-md');
+          }
+        }
+      });
+
+      if (backToTopBtn) {
+        backToTopBtn.addEventListener('click', () => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      }
+
+      // 2. Intersection Observer for Scroll Reveals
       const revealObserver = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
-            entry.target.classList.add('active');
+            entry.target.classList.add('visible');
+
+            // Trigger counter animation if inside
+            const counters = entry.target.querySelectorAll('.counter');
+            counters.forEach(counter => animateCounter(counter));
+
             observer.unobserve(entry.target);
           }
         });
       }, {
-        threshold: 0.12,
+        threshold: 0.15,
         rootMargin: '0px 0px -40px 0px'
       });
 
-      revealElements.forEach(el => revealObserver.observe(el));
+      function registerScrollElements() {
+        document.querySelectorAll('.scroll-reveal, .scroll-left, .scroll-right, .scroll-zoom').forEach(el => {
+          revealObserver.observe(el);
+        });
+      }
+      registerScrollElements();
 
+      // 3. Animated Number Counter on Scroll
+      function animateCounter(el) {
+        if (el.dataset.animated === 'true') return;
+        el.dataset.animated = 'true';
+
+        const target = parseInt(el.getAttribute('data-target'), 10) || 0;
+        const suffix = el.getAttribute('data-suffix') || '';
+        const duration = 1600;
+        const startTime = performance.now();
+
+        function update(currentTime) {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          // Ease out cubic
+          const easeProgress = 1 - Math.pow(1 - progress, 3);
+          const current = Math.floor(easeProgress * target);
+
+          if (target >= 1000) {
+            el.textContent = current.toLocaleString() + suffix;
+          } else {
+            el.textContent = current + suffix;
+          }
+
+          if (progress < 1) {
+            requestAnimationFrame(update);
+          } else {
+            el.textContent = target.toLocaleString() + suffix;
+          }
+        }
+        requestAnimationFrame(update);
+      }
+
+      // 4. Parallax Floating Elements on Mouse & Scroll
       const bubbles = document.querySelectorAll('.parallax-bubble');
-      window.addEventListener('mousemove', (e) => {
-        const mouseX = (e.clientX / window.innerWidth) - 0.5;
-        const mouseY = (e.clientY / window.innerHeight) - 0.5;
+      let latestScrollY = 0;
+      let ticking = false;
 
+      function updateParallax() {
         bubbles.forEach(bubble => {
           const speed = parseFloat(bubble.getAttribute('data-speed')) || 1;
-          const x = mouseX * 45 * speed;
-          const y = mouseY * 45 * speed;
-          bubble.style.transform = `translate(${x}px, ${y}px)`;
+          const yOffset = latestScrollY * 0.18 * speed;
+          bubble.style.transform = `translateY(${yOffset}px)`;
         });
+        ticking = false;
+      }
+
+      window.addEventListener('scroll', () => {
+        latestScrollY = window.scrollY;
+        if (!ticking) {
+          window.requestAnimationFrame(updateParallax);
+          ticking = true;
+        }
       });
 
+      // 5. Mobile Menu Toggle
       const menuBtn = document.getElementById('mobileMenuBtn');
       const mobileMenu = document.getElementById('mobileMenu');
       if (menuBtn && mobileMenu) {
@@ -654,6 +828,7 @@
         });
       }
 
+      // 6. Mobile Search Handler
       const mobSearch = document.getElementById('mobileSearch');
       if (mobSearch) {
         mobSearch.addEventListener('keydown', (e) => {
@@ -664,12 +839,13 @@
         });
       }
 
+      // 7. Render Semesters
       const semesterContainer = document.getElementById('semesterGrid');
       if (semesterContainer && typeof ECE_DATA !== 'undefined') {
         semesterContainer.innerHTML = ECE_DATA.semesters.map((sem, idx) => {
           const delayClass = `delay-${(idx % 4) + 1}`;
           return `
-            <a href="semester.html?sem=${sem.id}" class="reveal ${delayClass} group relative p-6 rounded-3xl bg-white border border-slate-200/90 hover:border-brand-primary/50 shadow-card-soft hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between">
+            <a href="semester.html?sem=${sem.id}" class="scroll-reveal ${delayClass} group relative p-6 rounded-3xl bg-white border border-slate-200/90 hover:border-brand-primary/50 shadow-card-soft hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1.5 flex flex-col justify-between">
               <div>
                 <div class="flex items-center justify-between mb-4">
                   <div class="w-12 h-12 rounded-2xl bg-blue-50 text-brand-primary font-heading font-extrabold text-xl flex items-center justify-center group-hover:bg-brand-primary group-hover:text-white transition-all duration-300 shadow-sm">
@@ -689,13 +865,14 @@
 
               <div class="mt-6 pt-4 border-t border-slate-100 flex items-center justify-between text-xs font-semibold text-brand-primary">
                 <span>Unlock Modules</span>
-                <iconify-icon icon="lucide:arrow-right" class="group-hover:translate-x-1 transition-transform"></iconify-icon>
+                <iconify-icon icon="lucide:arrow-right" class="group-hover:translate-x-1.5 transition-transform"></iconify-icon>
               </div>
             </a>
           `;
         }).join('');
       }
 
+      // 8. Render Featured Materials
       const featuredContainer = document.getElementById('featuredGrid');
       if (featuredContainer && typeof getMaterials === 'function') {
         const featuredList = getMaterials({ featured: true }).slice(0, 6);
@@ -703,7 +880,7 @@
           const subj = typeof getSubject === 'function' ? getSubject(mat.subjectId) : null;
           const delayClass = `delay-${(idx % 3) + 1}`;
           return `
-            <div class="reveal ${delayClass} group p-6 rounded-3xl bg-white border border-slate-200 hover:border-brand-primary/50 shadow-card-soft hover:shadow-card-hover transition-all duration-300 flex flex-col justify-between">
+            <div class="scroll-reveal ${delayClass} group p-6 rounded-3xl bg-white border border-slate-200 hover:border-brand-primary/50 shadow-card-soft hover:shadow-card-hover transition-all duration-300 flex flex-col justify-between hover:-translate-y-1.5">
               <div>
                 <div class="flex items-start justify-between gap-3 mb-3">
                   <span class="text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-blue-50 text-brand-primary">
@@ -736,7 +913,8 @@
         }).join('');
       }
 
-      document.querySelectorAll('#semesterGrid .reveal, #featuredGrid .reveal').forEach(el => revealObserver.observe(el));
+      // Re-register dynamically rendered items into observer
+      registerScrollElements();
     });
   </script>
 </body>
