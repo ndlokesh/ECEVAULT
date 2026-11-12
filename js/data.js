@@ -121,16 +121,23 @@ const ECE_DATA = {
   ]
 };
 
+/* ── Custom Materials Helper (Admin Persistence & High Speed Cache) ── */
+let _customMaterialsCache = null;
+let _subjectCacheMap = null;
+
 function getCustomMaterials() {
+  if (_customMaterialsCache !== null) return _customMaterialsCache;
   try {
     const stored = localStorage.getItem('ecevault_custom_materials');
-    return stored ? JSON.parse(stored) : [];
+    _customMaterialsCache = stored ? JSON.parse(stored) : [];
+    return _customMaterialsCache;
   } catch (e) {
     return [];
   }
 }
 
 function saveCustomMaterials(materials) {
+  _customMaterialsCache = materials;
   try {
     localStorage.setItem('ecevault_custom_materials', JSON.stringify(materials));
     return true;
@@ -148,11 +155,16 @@ function getSemester(semNum) {
 }
 
 function getSubject(subjectId) {
-  for (const sem of ECE_DATA.semesters) {
-    const subj = sem.subjects.find(s => s.id === subjectId);
-    if (subj) return { ...subj, semester: sem.id, semesterLabel: sem.label };
+  if (!subjectId) return null;
+  if (!_subjectCacheMap) {
+    _subjectCacheMap = {};
+    ECE_DATA.semesters.forEach(sem => {
+      sem.subjects.forEach(subj => {
+        _subjectCacheMap[subj.id] = { ...subj, semester: sem.id, semesterLabel: sem.label };
+      });
+    });
   }
-  return null;
+  return _subjectCacheMap[subjectId] || null;
 }
 
 function getMaterials(filters = {}) {
