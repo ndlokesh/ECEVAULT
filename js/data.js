@@ -121,6 +121,28 @@ const ECE_DATA = {
   ]
 };
 
+function getCustomMaterials() {
+  try {
+    const stored = localStorage.getItem('ecevault_custom_materials');
+    return stored ? JSON.parse(stored) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function saveCustomMaterials(materials) {
+  try {
+    localStorage.setItem('ecevault_custom_materials', JSON.stringify(materials));
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
+
+function getAllMaterials() {
+  return [...getCustomMaterials(), ...ECE_DATA.materials];
+}
+
 function getSemester(semNum) {
   return ECE_DATA.semesters.find(s => s.id === semNum);
 }
@@ -134,7 +156,7 @@ function getSubject(subjectId) {
 }
 
 function getMaterials(filters = {}) {
-  let results = [...ECE_DATA.materials];
+  let results = getAllMaterials();
   if (filters.semester) results = results.filter(m => m.semester === Number(filters.semester));
   if (filters.subjectId) results = results.filter(m => m.subjectId === filters.subjectId);
   if (filters.type) results = results.filter(m => m.type === filters.type);
